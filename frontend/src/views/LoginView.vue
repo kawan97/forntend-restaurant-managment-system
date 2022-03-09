@@ -20,20 +20,19 @@
 
           <!-- Email input -->
           <div class="form-outline mb-4">
-            <input type="email" id="form3Example3" class="form-control form-control-lg"
-              placeholder="Enter a valid email address" />
+            <input v-model="username" type="text" id="form3Example3" class="form-control form-control-lg"
+              placeholder="Enter a valid username" />
             <!-- <label class="form-label" for="form3Example3">Email address</label> -->
           </div>
-
           <!-- Password input -->
           <div class="form-outline mb-3">
-            <input type="password" id="form3Example4" class="form-control form-control-lg"
+            <input v-model="password" type="password" id="form3Example4" class="form-control form-control-lg"
               placeholder="Enter password" />
             <!-- <label class="form-label" for="form3Example4">Password</label> -->
           </div>
 
           <div class="text-center text-lg-start mt-4 pt-2">
-            <button type="button" class="btn btn-primary btn-lg"
+            <button v-on:click="checkusernameandpassword" type="button" class="btn btn-primary btn-lg"
               style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
 
           </div>
@@ -46,6 +45,32 @@
 </section>
   </div>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      username:'',
+      password:''
+    }
+  },
+  methods:{
+    checkusernameandpassword: function(event){
+      if(this.username && this.password){
+        //dispach action
+        this.$store.dispatch({
+                  type: 'checkusernameeandpass',
+                  username: this.username,
+                  password: this.password
+              })
+      }else{
+      alert('username or pass is empty')
+
+      }
+
+    }
+  }
+}
+</script>
 
 <style scoped>
 .divider:after,
