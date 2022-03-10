@@ -47,6 +47,11 @@
 </template>
 <script>
 export default {
+    beforeCreate(){
+    if(this.$store.getters.user['access']){
+      this.$router.replace({ path: '/' })
+    }
+  },
   data() {
     return {
       username:'',
@@ -64,7 +69,7 @@ export default {
               })
       }else{
       alert('username or pass is empty')
-
+      
       }
 
     }

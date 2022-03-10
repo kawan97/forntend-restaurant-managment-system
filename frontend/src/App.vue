@@ -41,6 +41,16 @@
 </nav>
   <router-view/>
 </template>
+<script>
+
+export default({
+  async beforeCreate() {
+    await this.$store.dispatch({type: 'checklocalstorage'})
+    
+  },
+
+})
+</script>
 
 <style>
 #app {
