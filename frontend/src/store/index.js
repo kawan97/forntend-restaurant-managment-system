@@ -42,6 +42,7 @@ export default createStore({
           // console.log('Success:', data);
           commit('setUser',data)
           localStorage.setItem('user',JSON.stringify(data));
+          window.location.href = '/';
         }
       })
       .catch((error) => {
