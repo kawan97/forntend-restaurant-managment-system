@@ -10,12 +10,12 @@
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
         <form>
           <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
-            <p class="lead fw-normal mb-0 me-3">Login</p>
+            <p class="lead fw-normal mb-0 me-3 text-white">Login</p>
 
           </div>
 
           <div class="divider d-flex align-items-center my-4">
-            <p class="text-center fw-bold mx-3 mb-0">Enter Username And Password</p>
+            <p class="text-center text-white fw-bold mx-3 mb-0">Enter Username And Password</p>
           </div>
 
           <!-- Email input -->
@@ -32,7 +32,7 @@
           </div>
 
           <div class="text-center text-lg-start mt-4 pt-2">
-            <button v-on:click="checkusernameandpassword" type="button" class="btn btn-primary btn-lg"
+            <button v-on:click="checkusernameandpassword" type="button" class="btn btn-red btn-lg"
               style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
 
           </div>
@@ -78,6 +78,18 @@ export default {
 </script>
 
 <style scoped>
+.btn-red{
+
+    color: white;
+    background: #FC5404;
+    border-left-color: #FC5404
+}
+.btn-red:hover{
+
+    color: rgb(17, 15, 15);
+    background: #d34605;
+    border-left-color: #d34605
+}
 .divider:after,
 .divider:before {
   content: "";
