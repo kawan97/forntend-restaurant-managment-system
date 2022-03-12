@@ -1,15 +1,23 @@
 <template>
-  <div class="pt-4 text-white">
+  <div class=" text-white">
     <h1>Tables</h1>
     <div class="container text-black">
       <div class="row">
-        <Card tablename='aaaaa' status="empty" id='1' />
-        <Card tablename='aaaaa' status="reserved" id='1' />
-        <Card tablename='aaaaa' status="empty" id='1' />
-        <Card tablename='aaaaa' status="reserved" id='1' />
-        <Card tablename='aaaaa' status="reserved" id='1' />
-        <Card tablename='aaaaa' status="empty" id='1' />
-        <Card tablename='aaaaa' status="reserved" id='1' />
+        <Card tablename='aaaaa' status="empty" id='1' :key="1"/>
+        <Card tablename='aaaaa' status="empty" id='1' :key="1"/>
+        <Card tablename='aaaaa' status="empty" id='1' :key="1"/>
+        <Card tablename='aaaaa' status="empty" id='1' :key="1"/>
+        <Card tablename='aaaaa' status="empty" id='1' :key="1"/>
+        <Card tablename='aaaaa' status="empty" id='1' :key="1"/>
+        <Card tablename='aaaaa' status="empty" id='1' :key="1"/>
+        <Card tablename='aaaaa' status="empty" id='1' :key="1"/>
+        <Card tablename='aaaaa' status="empty" id='1' :key="1"/>
+        <Card tablename='aaaaa' status="reserved" id='1' :key="2"/>
+        <Card tablename='aaaaa' status="empty" id='1' :key="3"/>
+        <Card tablename='aaaaa' status="reserved" id='1' :key="4"/>
+        <Card tablename='aaaaa' status="reserved" id='1' :key="5"/>
+        <Card tablename='aaaaa' status="empty" id='1' :key="6"/>
+        <Card tablename='aaaaa' status="reserved" id='1' :key="7" />
       </div>
     </div>
   </div>

@@ -23,9 +23,12 @@
 
     </ul>
 </nav>
-<!-- <div class="content">
-    <div class="header"> Main dsdsd goes here </div>
-</div> -->
+<div class="content">
+    <div class="header">
+       <router-view/>
+       
+       </div>
+</div>
 </div>
 </template>
 
@@ -227,6 +230,7 @@ nav ul li a span.rotate {
 }
 
 .content {
+     height: 100%;
     position: absolute;
     top: 50%;
     left: 50%;

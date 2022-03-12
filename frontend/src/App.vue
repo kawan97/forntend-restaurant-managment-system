@@ -1,7 +1,6 @@
 <template>
 <div class="bg-dark">
     <navbar/>
-  <router-view/>
   </div>
 </template>
 <script>

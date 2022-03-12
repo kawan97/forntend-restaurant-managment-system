@@ -1,6 +1,6 @@
 <template>
         <!-- card -->
-        <div class="col-md-3 col-sm-6 mb-4">
+        <div class="col-12 col-lg-4 col-xl-4 col-md-6 mb-4">
           <div :class="{ empty: status==='empty',reserved:status==='reserved' }" class="card card-block">
            <h4 class="card-title text-right py-3">Table</h4>
            <img v-if="status==='empty'" src="@/assets/svg/empty1.svg" alt="">
@@ -26,7 +26,7 @@ export default {
 //   },
   props: {
     tablename: String,
-    status:Boolean,
+    status:String,
     id:String,
   },
   methods: {
