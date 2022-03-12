@@ -4,25 +4,28 @@
 <nav v-bind:class="{ show: show }"  class="sidebar ">
     <div class="text"> rest </div>
     <ul class="main_side">
-        <li class="active"><a href="#">Dashboard</a></li>
+        <div v-if="this.$store.getters.user">
+          <li class="active"><a href="#">Dashboard</a></li>
 
-        <li><a href="#">Users</a></li>
-        <li><a href="#">Message</a></li>
-        <li><a href="#">Bookmark</a></li>
-        <!-- <li class="active"> <a href="#"  id="2">Services <span class="fas fa-caret-down"></span> </a>
-            <ul class="item-show-2 show">
-                <li><a href="#">App Design</a></li>
-                <li><a href="#">Web Design</a></li>
-            </ul>
-        </li> -->
-        <li><a href="#" v-on:click="toggle"><img src="@/assets/svg/left.svg">Hide</a></li>
-        <li><a href="#" v-on:click="logout"><img src="@/assets/svg/left.svg">Logout</a></li>
+          <li><a href="#">Users</a></li>
+          <li><a href="#">Message</a></li>
+         <li><a href="#">Bookmark</a></li>
+         <!-- <li class="active"> <a href="#"  id="2">Services <span class="fas fa-caret-down"></span> </a>
+              <ul class="item-show-2 show">
+                  <li><a href="#">App Design</a></li>
+                  <li><a href="#">Web Design</a></li>
+             </ul>
+          </li> -->
+          <li><a href="#" v-on:click="logout"><img src="@/assets/svg/left.svg">Logout</a></li>
+
+        </div>
+     <li><a href="#" v-on:click="toggle"><img src="@/assets/svg/left.svg">Hide</a></li>
 
     </ul>
 </nav>
-<div class="content">
+<!-- <div class="content">
     <div class="header"> Main dsdsd goes here </div>
-</div>
+</div> -->
 </div>
 </template>
 
