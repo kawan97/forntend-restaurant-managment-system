@@ -30,11 +30,11 @@
           <div>
             You Dont Have Sub Order
           </div>
-          <button class="btn btn-darkblue">Add sub order to this  order</button>
+          <button v-on:click="addsuborder(this.order[0]['id'])" class="btn btn-darkblue">Add sub order to this  order</button>
         </div>
       </div>
       <div v-if="loading==false && order.length == 0" class="row">
-        when we have no order
+          <button v-on:click="addorder" class="btn btn-darkblue">Add Order to this table</button>
       </div>
     </div>
   </div>
@@ -71,6 +71,11 @@ export default {
             this.order = data;
             this.loading = false;
           }
+          if(data.length == 0){
+            console.log('i havnt any order :(')
+            this.loading = false;
+
+          }
         }
       })
       .catch((error) => {
@@ -78,6 +83,15 @@ export default {
       });
   },
   components: {},
+    methods: {
+    addsuborder:function(orderid){
+      console.log("create sub order :D :"+orderid)
+    },
+    addorder:function(){
+      console.log("create  order :D :"+this.$route.params.tableid)
+
+    },
+  },
 };
 </script>
 <style scoped>
