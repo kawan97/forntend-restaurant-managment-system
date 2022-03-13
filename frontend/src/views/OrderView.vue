@@ -9,12 +9,32 @@
       </div>
       <div v-if="order.length == 1" class="row text-white">
         Order id= {{ this.order[0]["id"] }}
+        <div
+          v-if="
+            order[0] &&
+            order[0].suborderorder.length > 0 &&
+            order[0].suborderorder[order[0].suborderorder.length - 1].status !=
+              'ordering'
+          "
+        >
+          <div>Add another sub order to this order</div>
+          <button
+            v-on:click="addsuborder(this.order[0]['id'])"
+            class="btn btn-darkblue"
+          >
+            <span
+              v-if="btnloading"
+              class="spinner-border spinner-border-sm"
+            ></span>
+            Add sub order to this order
+          </button>
+        </div>
         <div v-if="this.order[0]['suborderorder'].length > 0">
           <ul v-for="subs in this.order[0]['suborderorder']" :key="subs.id">
-            <li>
+            <li :class='{"text-success":subs.status!="ordering"}'>
               Sub order :{{ subs.id }} ,and Status : {{ subs.status }}
               <div v-if="subs.status == 'ordering'">
-                <button class="btn btn-red">Add Item To this sub order</button>
+                <button v-on:click="pushtoaddorder(subs.id)" class="btn btn-red">Add Item To this sub order</button>
               </div>
               <div
                 v-for="(item, index) in subs['orderitemsuborder']"
@@ -32,13 +52,20 @@
             v-on:click="addsuborder(this.order[0]['id'])"
             class="btn btn-darkblue"
           >
+            <span
+              v-if="btnloading"
+              class="spinner-border spinner-border-sm"
+            ></span>
             Add sub order to this order
           </button>
         </div>
       </div>
       <div v-if="loading == false && order.length == 0" class="row">
         <button v-on:click="addorder" class="btn btn-darkblue">
-          <span v-if="btnloading" class="spinner-border spinner-border-sm"></span>
+          <span
+            v-if="btnloading"
+            class="spinner-border spinner-border-sm"
+          ></span>
           Add Order
         </button>
       </div>
@@ -56,7 +83,7 @@ export default {
   data: function () {
     return {
       loading: true,
-      btnloading:false,
+      btnloading: false,
       order: [],
     };
   },
@@ -90,12 +117,39 @@ export default {
   },
   components: {},
   methods: {
-    addsuborder: function (orderid) {
-      console.log("create sub order :D :" + orderid);
+    pushtoaddorder:function(suborderid){
+      // console.log(suborderid)
+      this.$router.push({ name: "items" , params: { suborderid: suborderid }});
+
+    },
+    addsuborder: async function (orderid) {
+      this.btnloading = true;
+      await fetch(URL + "api/suborder/" + orderid + "/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: "Bearer " + this.$store.getters.user["access"],
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            this.order[0].suborderorder.push(data.data);
+            this.btnloading = false;
+          }
+          if (data.detail) {
+            this.$router.push({ name: "home" });
+            alert(data.detail);
+          }
+        })
+        .catch((error) => {
+          this.btnloading = false;
+          console.error("Error:", error);
+        });
     },
     addorder: async function () {
-      this.btnloading=true
-      var mydata=JSON.stringify({ tableid: this.$route.params.tableid})
+      this.btnloading = true;
+      var mydata = JSON.stringify({ tableid: this.$route.params.tableid });
       // console.log("create  order :D :" + this.$route.params.tableid);
       await fetch(URL + "api/order/", {
         method: "POST",
@@ -112,12 +166,12 @@ export default {
           }
           if (data.success) {
             this.order = [];
-            this.order.push(data.data)
+            this.order.push(data.data);
             // console.log(this.order[0])
           }
           if (data.detail) {
-            // this.$router.push({ name: "home" });
-            alert(data.detail)
+            this.$router.push({ name: "home" });
+            alert(data.detail);
           }
         })
         .catch((error) => {
