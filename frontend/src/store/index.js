@@ -1,7 +1,7 @@
 import { createStore } from "vuex";
 import router from "../router/index.js"
-
-var url='http://127.0.0.1:8000/'
+import {URL} from "./const.js";
+var url=URL
 export default createStore({
   state: {
     user: "",
