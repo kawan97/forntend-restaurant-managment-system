@@ -1,23 +1,11 @@
 <template>
   <div class=" text-white">
-    <h1>Tables</h1>
+    <h1>Tables For Captain</h1>
     <div class="container text-black">
       <div class="row">
-        <Card tablename='aaaaa' status="empty" id='1' :key="1"/>
-        <Card tablename='aaaaa' status="empty" id='1' :key="1"/>
-        <Card tablename='aaaaa' status="empty" id='1' :key="1"/>
-        <Card tablename='aaaaa' status="empty" id='1' :key="1"/>
-        <Card tablename='aaaaa' status="empty" id='1' :key="1"/>
-        <Card tablename='aaaaa' status="empty" id='1' :key="1"/>
-        <Card tablename='aaaaa' status="empty" id='1' :key="1"/>
-        <Card tablename='aaaaa' status="empty" id='1' :key="1"/>
-        <Card tablename='aaaaa' status="empty" id='1' :key="1"/>
-        <Card tablename='aaaaa' status="reserved" id='1' :key="2"/>
-        <Card tablename='aaaaa' status="empty" id='1' :key="3"/>
-        <Card tablename='aaaaa' status="reserved" id='1' :key="4"/>
-        <Card tablename='aaaaa' status="reserved" id='1' :key="5"/>
-        <Card tablename='aaaaa' status="empty" id='1' :key="6"/>
-        <Card tablename='aaaaa' status="reserved" id='1' :key="7" />
+        <div v-for="singletb in this.$store.getters.table" :key="singletb.id" class="col-12 col-lg-4 col-xl-4 col-md-6 mb-4">
+        <Card type='captain' :tablename='singletb["name"]' :status="singletb['status']" :id='singletb["id"]' />
+        </div>
       </div>
     </div>
   </div>
@@ -30,9 +18,14 @@ import Card from '@/components/Card.vue'
 
 export default {
   name: 'HomeView',
+    async beforeCreate() {
+    await this.$store.dispatch({type: 'getalltable'})
+    
+  },
   components: {
     Navbar,
     Card
-  }
+  },
+
 }
 </script>

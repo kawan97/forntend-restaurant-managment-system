@@ -1,15 +1,13 @@
 <template>
         <!-- card -->
-        <div class="col-12 col-lg-4 col-xl-4 col-md-6 mb-4">
-          <div :class="{ empty: status==='empty',reserved:status==='reserved' }" class="card card-block">
-           <h4 class="card-title text-right py-3">Table</h4>
+          <div v-on:click='pushToOrder' :class="{ empty: status==='empty',reserved:status==='reserved' }" class="card card-block">
+           <h4 class="card-title text-right py-3">Table {{id}}</h4>
            <img v-if="status==='empty'" src="@/assets/svg/empty1.svg" alt="">
             <img v-if="status==='reserved'" src="@/assets/svg/reserved3.svg" alt="">
             <h2 class=" mt-3 mb-3">{{this.tablename}}</h2>
            <p  v-if="status==='empty'" class="card-text">This table is Empty .</p> 
            <p  v-if="status==='reserved'" class="card-text">Sorry this table is reserved .</p> 
           </div>
-        </div>
         <!-- end card -->
 </template>
 
@@ -27,10 +25,17 @@ export default {
   props: {
     tablename: String,
     status:String,
-    id:String,
+    type:String,
+    id:Number,
   },
   methods: {
     pushToOrder:function(){
+      if(this.type=='captain'){
+      this.$router.push({ name: 'order', params: { tableid: this.id } })
+      }else{
+      this.$router.push({ name: 'pay', params: { tableid: this.id } })
+
+      }
 
     },
   },

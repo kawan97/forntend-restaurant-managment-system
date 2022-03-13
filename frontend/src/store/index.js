@@ -1,4 +1,6 @@
 import { createStore } from "vuex";
+import router from "../router/index.js"
+
 var url='http://127.0.0.1:8000/'
 export default createStore({
   state: {
@@ -8,13 +10,20 @@ export default createStore({
   getters: {
     user(state) {
       return state.user
-    }
+    },
+    table(state) {
+      return state.table
+    },
   },
   mutations: {
     setUser(state,payload) {
       state,
       state.user=payload
 
+    },    
+    setTable(state,payload) {
+      state,
+      state.table=payload
     },
     logout(state){
       state,
@@ -25,6 +34,7 @@ export default createStore({
     logout({ commit }){
       localStorage.removeItem('user');
       commit('logout')
+      router.push("/login");
 
     },
     async checkusernameeandpass({ commit }, { username, password }) {
@@ -42,7 +52,7 @@ export default createStore({
           // console.log('Success:', data);
           commit('setUser',data)
           localStorage.setItem('user',JSON.stringify(data));
-          window.location.href = '/';
+          router.push("/");
         }
       })
       .catch((error) => {
@@ -55,7 +65,32 @@ export default createStore({
          commit('setUser',user)
       }
       
-    }
+    },
+    async getalltable({commit,dispatch,state}){
+      await fetch(url+"api/tables/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization":"Bearer "+state.user['access']
+        },
+      }).then(response => response.json())
+      .then(data => {
+        if(data.detail){
+          alert(data.detail)
+          dispatch({type: 'logout'})
+
+        }else{
+          // console.log('Success:', data);
+          commit('setTable',data)
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    
+    },
+
+    
   },
   modules: {},
 });
