@@ -27,14 +27,20 @@
           </ul>
         </div>
         <div v-if="this.order[0]['suborderorder'].length == 0">
-          <div>
-            You Dont Have Sub Order
-          </div>
-          <button v-on:click="addsuborder(this.order[0]['id'])" class="btn btn-darkblue">Add sub order to this  order</button>
+          <div>You Dont Have Sub Order</div>
+          <button
+            v-on:click="addsuborder(this.order[0]['id'])"
+            class="btn btn-darkblue"
+          >
+            Add sub order to this order
+          </button>
         </div>
       </div>
-      <div v-if="loading==false && order.length == 0" class="row">
-          <button v-on:click="addorder" class="btn btn-darkblue">Add Order to this table</button>
+      <div v-if="loading == false && order.length == 0" class="row">
+        <button v-on:click="addorder" class="btn btn-darkblue">
+          <span v-if="btnloading" class="spinner-border spinner-border-sm"></span>
+          Add Order
+        </button>
       </div>
     </div>
   </div>
@@ -50,6 +56,7 @@ export default {
   data: function () {
     return {
       loading: true,
+      btnloading:false,
       order: [],
     };
   },
@@ -71,10 +78,9 @@ export default {
             this.order = data;
             this.loading = false;
           }
-          if(data.length == 0){
-            console.log('i havnt any order :(')
+          if (data.length == 0) {
+            // console.log("i havnt any order :(");
             this.loading = false;
-
           }
         }
       })
@@ -83,13 +89,40 @@ export default {
       });
   },
   components: {},
-    methods: {
-    addsuborder:function(orderid){
-      console.log("create sub order :D :"+orderid)
+  methods: {
+    addsuborder: function (orderid) {
+      console.log("create sub order :D :" + orderid);
     },
-    addorder:function(){
-      console.log("create  order :D :"+this.$route.params.tableid)
-
+    addorder: async function () {
+      this.btnloading=true
+      var mydata=JSON.stringify({ tableid: this.$route.params.tableid})
+      // console.log("create  order :D :" + this.$route.params.tableid);
+      await fetch(URL + "api/order/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: "Bearer " + this.$store.getters.user["access"],
+        },
+        body: mydata,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.error) {
+            alert(data.error);
+          }
+          if (data.success) {
+            this.order = [];
+            this.order.push(data.data)
+            // console.log(this.order[0])
+          }
+          if (data.detail) {
+            // this.$router.push({ name: "home" });
+            alert(data.detail)
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
     },
   },
 };
@@ -105,16 +138,14 @@ export default {
   background: #d34605;
   border-left-color: #d34605;
 }
-.btn-darkblue{
-
-    color: white;
-    background: #073b4c;
-    border-left-color: #073b4c
+.btn-darkblue {
+  color: white;
+  background: #073b4c;
+  border-left-color: #073b4c;
 }
-.btn-darkblue:hover{
-
-    color: #d34605;
-    background: #052631;
-    border-left-color: #052631
+.btn-darkblue:hover {
+  color: #d34605;
+  background: #052631;
+  border-left-color: #052631;
 }
 </style>
