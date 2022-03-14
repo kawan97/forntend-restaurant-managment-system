@@ -5,11 +5,14 @@ var url=URL
 export default createStore({
   state: {
     user: "",
-    name:'kawa'
+    food:'',
   },
   getters: {
     user(state) {
       return state.user
+    },
+    food(state) {
+      return state.food
     },
     table(state) {
       return state.table
@@ -20,7 +23,12 @@ export default createStore({
       state,
       state.user=payload
 
-    },    
+    },  
+    setFood(state,payload) {
+      state,
+      state.food=payload
+
+    },   
     setTable(state,payload) {
       state,
       state.table=payload
@@ -31,6 +39,31 @@ export default createStore({
     },
   },
   actions: {
+    async getfood({ commit }){
+      if(this.state.food==''){
+      await fetch(URL + "api/items/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + this.state.user["access"],
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.detail) {
+            alert(data.detail);
+          } else {
+            // console.log(data.data)
+            //commit setFood
+            commit('setFood',data.data)
+
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+      }
+    },
     logout({ commit }){
       localStorage.removeItem('user');
       commit('logout')

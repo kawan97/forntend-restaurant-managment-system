@@ -30,18 +30,52 @@
           </button>
         </div>
         <div v-if="this.order[0]['suborderorder'].length > 0">
-          <ul v-for="subs in this.order[0]['suborderorder']" :key="subs.id">
-            <li :class='{"text-success":subs.status!="ordering"}'>
+          <ul
+            v-for="(subs, indexofsub) in this.order[0]['suborderorder']"
+            :key="subs.id + 'asa'"
+          >
+            <li :class="{ 'text-success': subs.status != 'ordering' }">
               Sub order :{{ subs.id }} ,and Status : {{ subs.status }}
-              <div v-if="subs.status == 'ordering'">
-                <button v-on:click="pushtoaddorder(subs.id)" class="btn btn-red">Add Item To this sub order</button>
-              </div>
               <div
                 v-for="(item, index) in subs['orderitemsuborder']"
                 :key="item.id"
               >
                 {{ index + 1 }} : {{ item.SubItem["name"] }} :
                 {{ item.SubItem["item_price"] }}
+              </div>
+              <div v-if="subs.status == 'ordering'">
+                <button
+                  v-if="subs['orderitemsuborder'].length>0"
+                  v-on:click="orderstatuschange(subs.id,indexofsub)"
+                  class="btn btn-darkblue"
+                >
+                  Send this sub order to chef
+                </button>
+                <div>please Add Food to your sub order</div>
+                <div
+                  v-for="foodtype in this.$store.getters.food"
+                  :key="foodtype.id + 'sss'"
+                >
+                  <div>-type: {{ foodtype.name }}</div>
+                  <ul
+                    v-for="itemfood in foodtype.subitem"
+                    :key="itemfood.id + 'asas'"
+                  >
+                    {{
+                      itemfood.name
+                    }}|{{
+                      itemfood.item_price
+                    }}
+                    <button
+                      v-on:click="
+                        additemtosuborder(subs.id, itemfood.id, indexofsub)
+                      "
+                      class="btn btn-red"
+                    >
+                      Add
+                    </button>
+                  </ul>
+                </div>
               </div>
             </li>
           </ul>
@@ -114,13 +148,81 @@ export default {
       .catch((error) => {
         console.error("Error:", error);
       });
+    // now fetch all foods
+    if (this.$store.getters.food == "") {
+      this.$store.dispatch({ type: "getfood" });
+    }
+
+    //end before create
   },
   components: {},
   methods: {
-    pushtoaddorder:function(suborderid){
-      // console.log(suborderid)
-      this.$router.push({ name: "items" , params: { suborderid: suborderid }});
+    orderstatuschange:async function(suborderid,indexof){
+      this.loading = true;
+      var mydata = JSON.stringify({ suborderstatus: 'sendingtochef' });
+      await fetch(URL + "api/suborderupdate/" + suborderid + "/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: "Bearer " + this.$store.getters.user["access"],
+        },
+        body: mydata,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.error) {
+            alert(data.error);
+          }
+          if (data.success) {
+            this.loading = false;
+            this.order[0]["suborderorder"][indexof].status='sendingtochef'
+            // console.log(data);
+          }
+          if (data.detail) {
+            this.$router.push({ name: "home" });
+            alert(data.detail);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+      console.log(suborderid)
+    },
+    additemtosuborder: async function (suborderid, itemid, myindex) {
+      this.loading = true;
+      // console.log("add " + itemid + " to this sub order id " + suborderid);
+      var mydata = JSON.stringify({ subitemid: itemid });
+      // console.log("create  order :D :" + this.$route.params.tableid);
+      await fetch(URL + "api/orderitem/" + suborderid + "/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: "Bearer " + this.$store.getters.user["access"],
+        },
+        body: mydata,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.error) {
+            alert(data.error);
+          }
+          if (data.success) {
+            this.loading = false;
+            
+            this.order[0]["suborderorder"][myindex].orderitemsuborder.push(data.data)
+            
 
+            // console.log(this.order[0]["suborderorder"][myindex].orderitemsuborder);
+          }
+          if (data.detail) {
+             this.$router.push({ name: "home" });
+            alert(data.detail);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+      // this.$router.push({ name: "items" , params: { suborderid: suborderid }});
     },
     addsuborder: async function (orderid) {
       this.btnloading = true;
