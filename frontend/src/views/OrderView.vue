@@ -23,7 +23,7 @@
             class="btn btn-darkblue"
           >
             <span
-              v-if="btnloading"
+              v-if="subbtnloading"
               class="spinner-border spinner-border-sm"
             ></span>
             Add sub order to this order
@@ -119,6 +119,7 @@ export default {
       loading: true,
       btnloading: false,
       order: [],
+      subbtnloading:false
     };
   },
   async beforeCreate() {
@@ -225,7 +226,7 @@ export default {
       // this.$router.push({ name: "items" , params: { suborderid: suborderid }});
     },
     addsuborder: async function (orderid) {
-      this.btnloading = true;
+      this.subbtnloading = true;
       await fetch(URL + "api/suborder/" + orderid + "/", {
         method: "POST",
         headers: {
@@ -237,7 +238,7 @@ export default {
         .then((data) => {
           if (data.success) {
             this.order[0].suborderorder.push(data.data);
-            this.btnloading = false;
+            this.subbtnloading = false;
           }
           if (data.detail) {
             this.$router.push({ name: "home" });
@@ -269,6 +270,7 @@ export default {
           if (data.success) {
             this.order = [];
             this.order.push(data.data);
+            this.btnloading=false
             // console.log(this.order[0])
           }
           if (data.detail) {

@@ -111,7 +111,7 @@ export default {
     },
     orderstatuschange: async function (subordertoupdate) {
       this.singlesuborderloading = true;
-      var mydata = JSON.stringify({ suborderstatus: "sendingtowaiter" });
+      var mydata = JSON.stringify({ suborderstatus: "orderisready" });
       await fetch(URL + "api/suborderupdate/" + subordertoupdate.id + "/", {
         method: "POST",
         headers: {
