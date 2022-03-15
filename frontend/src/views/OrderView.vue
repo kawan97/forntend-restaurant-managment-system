@@ -187,7 +187,7 @@ export default {
         .catch((error) => {
           console.error("Error:", error);
         });
-      console.log(suborderid)
+      // console.log(suborderid)
     },
     additemtosuborder: async function (suborderid, itemid, myindex) {
       this.loading = true;

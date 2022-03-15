@@ -4,6 +4,7 @@ import LoginView from '../views/LoginView.vue'
 import OrderView from '../views/OrderView.vue'
 import SubOrderView from '../views/SubOrderView.vue'
 import WaiterSubOrderView from '../views/WaiterSubOrderView.vue'
+import PayView from '../views/PayView.vue'
 
 const routes = [
   {
@@ -15,6 +16,11 @@ const routes = [
     path: '/order/:tableid',
     name: 'order',
     component: OrderView
+  },
+  {
+    path: '/pay/:tableid',
+    name: 'pay',
+    component: PayView
   },
   {
     path: '/suborder',

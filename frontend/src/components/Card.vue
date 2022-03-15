@@ -33,7 +33,9 @@ export default {
       if(this.type=='captain'){
       this.$router.push({ name: 'order', params: { tableid: this.id } })
       }else{
-      this.$router.push({ name: 'pay', params: { tableid: this.id } })
+        if(this.status!='empty'){
+          this.$router.push({ name: 'pay', params: { tableid: this.id } })
+        }
 
       }
 
