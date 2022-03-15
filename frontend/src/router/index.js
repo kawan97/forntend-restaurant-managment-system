@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import OrderView from '../views/OrderView.vue'
+import SubOrderView from '../views/SubOrderView.vue'
 
 const routes = [
   {
@@ -13,6 +14,11 @@ const routes = [
     path: '/order/:tableid',
     name: 'order',
     component: OrderView
+  },
+  {
+    path: '/suborder',
+    name: 'suborder',
+    component: SubOrderView
   },
   {
     path: '/login',
