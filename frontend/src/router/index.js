@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import OrderView from '../views/OrderView.vue'
 import SubOrderView from '../views/SubOrderView.vue'
+import WaiterSubOrderView from '../views/WaiterSubOrderView.vue'
 
 const routes = [
   {
@@ -19,6 +20,11 @@ const routes = [
     path: '/suborder',
     name: 'suborder',
     component: SubOrderView
+  },
+  {
+    path: '/waitersuborder',
+    name: 'waitersuborder',
+    component: WaiterSubOrderView
   },
   {
     path: '/login',

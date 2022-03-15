@@ -1,6 +1,6 @@
 <template>
   <div class="text-white">
-    <h1>Sub Order For Chef</h1>
+    <h1>Sub Order For Waiter</h1>
     <div class="container text-white">
       <div v-if="loading" class="row">
         <div>
@@ -55,7 +55,7 @@
               v-on:click="orderstatuschange(singlesuborder)"
               class="btn btn-danger"
             >
-              send to Waiter
+              sub order served
             </button>
           </div>
         </div>
@@ -69,7 +69,7 @@
 import { URL } from "../store/const.js";
 
 export default {
-  name: "SubOrderView",
+  name: "WaiterSubOrderView",
   data: function () {
     return {
       loading: true,
@@ -80,7 +80,7 @@ export default {
   },
   async beforeCreate() {
     // await this.$store.dispatch({type: 'getalltable'})
-    await fetch(URL + "api/suborders/", {
+    await fetch(URL + "api/waitersuborders/", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -111,7 +111,7 @@ export default {
     },
     orderstatuschange: async function (subordertoupdate) {
       this.singlesuborderloading = true;
-      var mydata = JSON.stringify({ suborderstatus: "orderisready" });
+      var mydata = JSON.stringify({ suborderstatus: "waiterserving" });
       await fetch(URL + "api/suborderupdate/" + subordertoupdate.id + "/", {
         method: "POST",
         headers: {
