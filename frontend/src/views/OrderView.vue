@@ -45,8 +45,8 @@
               </div>
               <div v-if="subs.status == 'ordering'">
                 <button
-                  v-if="subs['orderitemsuborder'].length>0"
-                  v-on:click="orderstatuschange(subs.id,indexofsub)"
+                  v-if="subs['orderitemsuborder'].length > 0"
+                  v-on:click="orderstatuschange(subs.id, indexofsub)"
                   class="btn btn-darkblue"
                 >
                   Send this sub order to chef
@@ -110,7 +110,7 @@
 <script>
 // @ is an alias to /src
 // import Card from '@/components/Card.vue'
-import { URL } from "../store/const.js";
+import { URL,WSURL } from "../store/const.js";
 
 export default {
   name: "OrderView",
@@ -119,7 +119,8 @@ export default {
       loading: true,
       btnloading: false,
       order: [],
-      subbtnloading:false
+      subbtnloading: false,
+      ws: null,
     };
   },
   async beforeCreate() {
@@ -157,10 +158,31 @@ export default {
     //end before create
   },
   components: {},
+  created() {
+    this.ws = new WebSocket(WSURL);
+    this.ws.onmessage = function (e) {
+      var data = JSON.parse(e.data);
+      //check event
+      if (data.event == "tablestatuschange") {
+        console.log("now table status changed");
+      } else if (data.event == "orderstatuschange") {
+        console.log("now order status changed");
+      } else if ((data.event = "suborderstatuschange")) {
+        console.log("now suborder status changed");
+      } else if ((data.event = "orderiscreated")) {
+        console.log("now order is created");
+      } else if ((data.event = "suborderiscreated")) {
+        console.log("now suborder is created");
+      } else if ((data.event = "additemtosuborder")) {
+        console.log("now add item to suborder");
+      }
+      //end check if
+    };
+  },
   methods: {
-    orderstatuschange:async function(suborderid,indexof){
+    orderstatuschange: async function (suborderid, indexof) {
       this.loading = true;
-      var mydata = JSON.stringify({ suborderstatus: 'sendingtochef' });
+      var mydata = JSON.stringify({ suborderstatus: "sendingtochef" });
       await fetch(URL + "api/suborderupdate/" + suborderid + "/", {
         method: "POST",
         headers: {
@@ -176,7 +198,9 @@ export default {
           }
           if (data.success) {
             this.loading = false;
-            this.order[0]["suborderorder"][indexof].status='sendingtochef'
+            this.order[0]["suborderorder"][indexof].status = "sendingtochef";
+            var wsdata={"value":data,'event':'suborderstatuschange'}
+             this.ws.send(JSON.stringify(wsdata));
             // console.log(data);
           }
           if (data.detail) {
@@ -209,14 +233,16 @@ export default {
           }
           if (data.success) {
             this.loading = false;
-            
-            this.order[0]["suborderorder"][myindex].orderitemsuborder.push(data.data)
-            
 
+            this.order[0]["suborderorder"][myindex].orderitemsuborder.push(
+              data.data
+            );
+            var wsdata={"value":data,'event':'additemtosuborder'}
+             this.ws.send(JSON.stringify(wsdata));
             // console.log(this.order[0]["suborderorder"][myindex].orderitemsuborder);
           }
           if (data.detail) {
-             this.$router.push({ name: "home" });
+            this.$router.push({ name: "home" });
             alert(data.detail);
           }
         })
@@ -239,6 +265,8 @@ export default {
           if (data.success) {
             this.order[0].suborderorder.push(data.data);
             this.subbtnloading = false;
+            var wsdata={"value":data,'event':'suborderiscreated'}
+             this.ws.send(JSON.stringify(wsdata));
           }
           if (data.detail) {
             this.$router.push({ name: "home" });
@@ -270,7 +298,9 @@ export default {
           if (data.success) {
             this.order = [];
             this.order.push(data.data);
-            this.btnloading=false
+            this.btnloading = false;
+            var wsdata={"value":data,'event':'orderiscreated'}
+             this.ws.send(JSON.stringify(wsdata));
             // console.log(this.order[0])
           }
           if (data.detail) {
