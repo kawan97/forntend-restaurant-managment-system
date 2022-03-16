@@ -110,7 +110,7 @@
 <script>
 // @ is an alias to /src
 // import Card from '@/components/Card.vue'
-import { URL,WSURL } from "../store/const.js";
+import { URL, WSURL } from "../store/const.js";
 
 export default {
   name: "OrderView",
@@ -160,23 +160,45 @@ export default {
   components: {},
   created() {
     this.ws = new WebSocket(WSURL);
+    var self = this;
     this.ws.onmessage = function (e) {
       var data = JSON.parse(e.data);
-      //check event
-      if (data.event == "tablestatuschange") {
-        console.log("now table status changed");
-      } else if (data.event == "orderstatuschange") {
-        console.log("now order status changed");
-      } else if ((data.event = "suborderstatuschange")) {
-        console.log("now suborder status changed");
-      } else if ((data.event = "orderiscreated")) {
-        console.log("now order is created");
-      } else if ((data.event = "suborderiscreated")) {
-        console.log("now suborder is created");
-      } else if ((data.event = "additemtosuborder")) {
-        console.log("now add item to suborder");
+      if (data.username != self.$store.getters.user["username"]) {
+        //check event
+        if (data.event == "tablestatuschange") {
+          console.log("now table status changed");
+          console.log(data);
+          console.log(self.$store.getters.table.length);
+          if (self.$store.getters.table.length > 0) {
+            console.log("sssssssssssssssssss");
+            var newarray = self.$store.getters.table;
+            var map1 = newarray.map((x) => {
+              if (x.id == data.data.id) {
+                x.status = data.data.status;
+                return x;
+              } else {
+                return x;
+              }
+            });
+            console.log(map1);
+            self.$store.dispatch({
+              type: "setewtable",
+              payload: map1,
+            });
+          }
+        } else if (data.event == "orderstatuschange") {
+          console.log("now order status changed");
+        } else if (data.event == "suborderstatuschange") {
+          console.log("now suborder status changede");
+        } else if (data.event == "orderiscreated") {
+          console.log("now order is created");
+        } else if (data.event == "suborderiscreated") {
+          console.log("now suborder is created");
+        } else if (data.event == "additemtosuborder") {
+          console.log("now add item to suborder");
+        }
+        //end check if
       }
-      //end check if
     };
   },
   methods: {
@@ -199,8 +221,12 @@ export default {
           if (data.success) {
             this.loading = false;
             this.order[0]["suborderorder"][indexof].status = "sendingtochef";
-            var wsdata={"value":data,'event':'suborderstatuschange'}
-             this.ws.send(JSON.stringify(wsdata));
+            var wsdata = {
+              value: data,
+              event: "suborderstatuschange",
+              username: this.$store.getters.user["username"],
+            };
+            this.ws.send(JSON.stringify(wsdata));
             // console.log(data);
           }
           if (data.detail) {
@@ -237,8 +263,12 @@ export default {
             this.order[0]["suborderorder"][myindex].orderitemsuborder.push(
               data.data
             );
-            var wsdata={"value":data,'event':'additemtosuborder'}
-             this.ws.send(JSON.stringify(wsdata));
+            var wsdata = {
+              value: data,
+              event: "additemtosuborder",
+              username: this.$store.getters.user["username"],
+            };
+            this.ws.send(JSON.stringify(wsdata));
             // console.log(this.order[0]["suborderorder"][myindex].orderitemsuborder);
           }
           if (data.detail) {
@@ -265,8 +295,12 @@ export default {
           if (data.success) {
             this.order[0].suborderorder.push(data.data);
             this.subbtnloading = false;
-            var wsdata={"value":data,'event':'suborderiscreated'}
-             this.ws.send(JSON.stringify(wsdata));
+            var wsdata = {
+              value: data,
+              event: "suborderiscreated",
+              username: this.$store.getters.user["username"],
+            };
+            this.ws.send(JSON.stringify(wsdata));
           }
           if (data.detail) {
             this.$router.push({ name: "home" });
@@ -299,8 +333,18 @@ export default {
             this.order = [];
             this.order.push(data.data);
             this.btnloading = false;
-            var wsdata={"value":data,'event':'orderiscreated'}
-             this.ws.send(JSON.stringify(wsdata));
+            var wsdata = {
+              value: data,
+              event: "orderiscreated",
+              username: this.$store.getters.user["username"],
+            };
+            this.ws.send(JSON.stringify(wsdata));
+            var wsdata = {
+              value: { id: this.$route.params.tableid, status: "reserved" },
+              event: "tablestatuschange",
+              username: this.$store.getters.user["username"],
+            };
+            this.ws.send(JSON.stringify(wsdata));
             // console.log(this.order[0])
           }
           if (data.detail) {

@@ -39,6 +39,10 @@ export default createStore({
     },
   },
   actions: {
+    setewtable({commit},{payload}){
+      commit('setTable',payload)
+
+    },
     async getfood({ commit }){
       if(this.state.food==''){
       await fetch(URL + "api/items/", {
