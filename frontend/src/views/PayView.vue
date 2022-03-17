@@ -100,9 +100,19 @@ export default {
         } else if (data.event == "suborderstatuschange") {
           console.log("now suborder status changede");
           if (data.data.data.Table.id == self.$route.params.tableid) {
-            self.order["0"].suborderorder[
-              self.order["0"].suborderorder.length - 1
-            ] = data.data.data;
+            // self.order["0"].suborderorder[
+            //   self.order["0"].suborderorder.length - 1
+            // ] = data.data.data;
+            var newsubs = self.order["0"].suborderorder;
+            var map1 = newsubs.map((x) => {
+              if (x.id == data.data.data.id) {
+                return data.data.data;
+              } else {
+                return x;
+              }
+            });
+            self.order["0"].suborderorder=[]
+            self.order["0"].suborderorder=map1
           }
         } else if (data.event == "orderiscreated") {
           console.log("now order is created");
@@ -212,6 +222,12 @@ export default {
             var wsdata = {
               value: { id: this.$route.params.tableid, status: "empty" },
               event: "tablestatuschange",
+              username: this.$store.getters.user["username"],
+            };
+            this.ws.send(JSON.stringify(wsdata));
+            var wsdata = {
+              value: { id: this.$route.params.tableid, status: "payed" },
+              event: "orderstatuschange",
               username: this.$store.getters.user["username"],
             };
             this.ws.send(JSON.stringify(wsdata));

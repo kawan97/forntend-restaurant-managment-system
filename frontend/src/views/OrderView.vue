@@ -169,7 +169,10 @@ export default {
           console.log("now table status changed");
           // console.log(data);
           // console.log(self.$store.getters.table.length);
-          if (self.$store.getters.table && self.$store.getters.table.length > 0) {
+          if (
+            self.$store.getters.table &&
+            self.$store.getters.table.length > 0
+          ) {
             var newarray = self.$store.getters.table;
             var map1 = newarray.map((x) => {
               if (x.id == data.data.id) {
@@ -187,12 +190,29 @@ export default {
           }
         } else if (data.event == "orderstatuschange") {
           console.log("now order status changed");
+          // console.log(data)
+          if (data.data.id == self.$route.params.tableid) {
+            if (data.data.status == "payed") {
+              self.order = [];
+            }
+          }
         } else if (data.event == "suborderstatuschange") {
           console.log("now suborder status changede");
+          // console.log(data.data.data.id)
           if (data.data.data.Table.id == self.$route.params.tableid) {
-            self.order["0"].suborderorder[
-              self.order["0"].suborderorder.length - 1
-            ] = data.data.data;
+            // self.order["0"].suborderorder[
+            //   self.order["0"].suborderorder.length - 1
+            // ] = data.data.data;
+            var newsubs = self.order["0"].suborderorder;
+            var map1 = newsubs.map((x) => {
+              if (x.id == data.data.data.id) {
+                return data.data.data;
+              } else {
+                return x;
+              }
+            });
+            self.order["0"].suborderorder=[]
+            self.order["0"].suborderorder=map1
           }
         } else if (data.event == "orderiscreated") {
           console.log("now order is created");
@@ -210,9 +230,9 @@ export default {
           console.log("now add item to suborder");
           // console.log(data.data.data)
           if (data.data.data.data.Table == self.$route.params.tableid) {
-            self.order['0']["suborderorder"][data.data.indexof].orderitemsuborder.push(
-              data.data.data.data
-            );
+            self.order["0"]["suborderorder"][
+              data.data.indexof
+            ].orderitemsuborder.push(data.data.data.data);
           }
         }
         //end check if
