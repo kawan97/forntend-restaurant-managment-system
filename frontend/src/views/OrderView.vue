@@ -199,6 +199,7 @@ export default {
         } else if (data.event == "suborderstatuschange") {
           console.log("now suborder status changede");
           // console.log(data.data.data.id)
+          // console.log(data)
           if (data.data.data.Table.id == self.$route.params.tableid) {
             // self.order["0"].suborderorder[
             //   self.order["0"].suborderorder.length - 1

@@ -66,16 +66,34 @@
 </template>
 
 <script>
-import { URL } from "../store/const.js";
+import { URL,WSURL } from "../store/const.js";
 
 export default {
   name: "SubOrderView",
   data: function () {
     return {
       loading: true,
-      suborder: "",
+      suborder: [],
       singlesuborderloading: false,
       singlesuborder: false,
+      ws:null,
+    };
+  },
+   created() {
+    this.ws = new WebSocket(WSURL);
+    var self = this;
+    this.ws.onmessage = function (e) {
+      var data = JSON.parse(e.data);
+      if (data.username != self.$store.getters.user["username"]) {
+        //check event
+         if (data.event == "suborderstatuschange") {
+          console.log("now suborder status changede");
+          if (data.data.data.status == 'sendingtochef') {
+            self.suborder.push(data.data.data)
+          }
+        }
+        //end check if
+      }
     };
   },
   async beforeCreate() {
@@ -126,13 +144,19 @@ export default {
             alert(data.error);
           }
           if (data.success) {
- 
-            this.suborder=this.suborder.filter(function (item) {
+            this.suborder = this.suborder.filter(function (item) {
               return item.id != subordertoupdate.id;
             });
             this.singlesuborderloading = false;
             this.singlesuborder = false;
             // console.log(data);
+            var wsdata = {
+              value: data,
+              event: "suborderstatuschange",
+              username: this.$store.getters.user["username"],
+            };
+            this.ws.send(JSON.stringify(wsdata));
+
           }
           if (data.detail) {
             this.$router.push({ name: "home" });
