@@ -42,10 +42,10 @@ export default {
         //check event
         if (data.event == "tablestatuschange") {
           console.log("now table status changed");
-          console.log(data);
-          console.log(self.$store.getters.table.length);
-          if (self.$store.getters.table.length > 0) {
-            console.log("sssssssssssssssssss");
+          // console.log(data);
+          // console.log(self.$store.getters.table.length);
+          if (self.$store.getters.table && self.$store.getters.table.length > 0) {
+            // console.log("sssssssssssssssssss");
             var newarray = self.$store.getters.table;
             var map1 = newarray.map((x) => {
               if (x.id == data.data.id) {
@@ -55,7 +55,7 @@ export default {
                 return x;
               }
             });
-            console.log(map1);
+            // console.log(map1);
             self.$store.dispatch({
               type: "setewtable",
               payload: map1,
