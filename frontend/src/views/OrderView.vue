@@ -167,10 +167,9 @@ export default {
         //check event
         if (data.event == "tablestatuschange") {
           console.log("now table status changed");
-          console.log(data);
-          console.log(self.$store.getters.table.length);
-          if (self.$store.getters.table.length > 0) {
-            console.log("sssssssssssssssssss");
+          // console.log(data);
+          // console.log(self.$store.getters.table.length);
+          if (self.$store.getters.table && self.$store.getters.table.length > 0) {
             var newarray = self.$store.getters.table;
             var map1 = newarray.map((x) => {
               if (x.id == data.data.id) {
@@ -180,7 +179,7 @@ export default {
                 return x;
               }
             });
-            console.log(map1);
+            // console.log(map1);
             self.$store.dispatch({
               type: "setewtable",
               payload: map1,
@@ -190,12 +189,31 @@ export default {
           console.log("now order status changed");
         } else if (data.event == "suborderstatuschange") {
           console.log("now suborder status changede");
+          if (data.data.data.Table.id == self.$route.params.tableid) {
+            self.order["0"].suborderorder[
+              self.order["0"].suborderorder.length - 1
+            ] = data.data.data;
+          }
         } else if (data.event == "orderiscreated") {
           console.log("now order is created");
+          // console.log(data)
+          if (data.data.data.Table.id == self.$route.params.tableid) {
+            self.order = [];
+            self.order.push(data.data.data);
+          }
         } else if (data.event == "suborderiscreated") {
           console.log("now suborder is created");
+          if (data.data.data.Table.id == self.$route.params.tableid) {
+            self.order["0"].suborderorder.push(data.data.data);
+          }
         } else if (data.event == "additemtosuborder") {
           console.log("now add item to suborder");
+          // console.log(data.data.data)
+          if (data.data.data.data.Table == self.$route.params.tableid) {
+            self.order['0']["suborderorder"][data.data.indexof].orderitemsuborder.push(
+              data.data.data.data
+            );
+          }
         }
         //end check if
       }
@@ -263,8 +281,9 @@ export default {
             this.order[0]["suborderorder"][myindex].orderitemsuborder.push(
               data.data
             );
+            // console.log(data)
             var wsdata = {
-              value: data,
+              value: { data: data, indexof: myindex },
               event: "additemtosuborder",
               username: this.$store.getters.user["username"],
             };
