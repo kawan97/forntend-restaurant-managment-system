@@ -46,6 +46,7 @@
               <th scope="col">Order</th>
               <th scope="col">User</th>
               <th scope="col">Total</th>
+              <th scope="col">Date</th>
             </tr>
           </thead>
           <tbody>
@@ -54,14 +55,16 @@
               <td>{{ paym.Order.id }}</td>
               <td>{{ paym.User.username }}</td>
               <td>{{ paym.total }}</td>
+              <td>{{ formatdate(paym.date) }}</td>
             </tr>
           </tbody>
-                    <thead>
+          <thead>
             <tr>
               <th scope="col"></th>
               <th scope="col">Total</th>
               <th scope="col"></th>
-              <th scope="col">{{sum}}</th>
+              <th scope="col">{{ sum }}</th>
+              <th scope="col"></th>
             </tr>
           </thead>
         </table>
@@ -74,6 +77,8 @@
 <script>
 // @ is an alias to /src
 import { URL } from "../store/const.js";
+  import moment from 'moment'
+
 export default {
   name: "OrderReportView",
   data: function () {
@@ -82,12 +87,17 @@ export default {
       payment: [],
       btnclick: false,
       enddate: "",
-      sum:0,
+      sum: 0,
       startdate: "",
     };
   },
   async beforeCreate() {},
   methods: {
+    formatdate: function (date) {
+      if (date) {
+        return moment(String(date)).format("YYYY-MM-DD hh:mm");
+      }
+    },
     getreport: async function () {
       if (this.startdate && this.enddate) {
         // console.log(this.startdate + " and " + this.enddate);
@@ -109,7 +119,7 @@ export default {
             if (data.success) {
               this.payment = [];
               this.payment["0"] = data.data;
-              this.sumallprice()
+              this.sumallprice();
               // console.log(this.payment['0'])
               this.btnclick = true;
             }
@@ -122,14 +132,14 @@ export default {
         alert("start date or end date or both of them are empty");
       }
     },
-    sumallprice(){
+    sumallprice() {
       this.sum = 0;
-      var mysum=0
+      var mysum = 0;
       for (var i = 0; i < this.payment[0].length; i++) {
-          mysum = mysum + parseInt(this.payment[0][i].total);
+        mysum = mysum + parseInt(this.payment[0][i].total);
       }
-      this.sum=mysum
-    }
+      this.sum = mysum;
+    },
   },
 };
 </script>
