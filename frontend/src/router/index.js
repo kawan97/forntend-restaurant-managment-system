@@ -9,6 +9,7 @@ import OrderReportView from '../views/OrderReportView.vue'
 import UserReportView from '../views/UserReportView.vue'
 import SingleSubOrderView from '../views/SingleSubOrderView.vue'
 import SingleOrderView from '../views/SingleOrderView.vue'
+import AddEquipmentView from '../views/AddEquipmentView.vue'
 
 const routes = [
   {
@@ -20,6 +21,11 @@ const routes = [
     path: '/order/:tableid',
     name: 'order',
     component: OrderView
+  },
+  {
+    path: '/addequipment',
+    name: 'addequipment',
+    component: AddEquipmentView
   },
   {
     path: '/singlesuborder/:suborderid',
