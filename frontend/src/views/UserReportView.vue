@@ -29,9 +29,7 @@
         >
       </div>
       <div v-if="users?.length != 0" class="mt-3">
-                <small  class="form-text text-muted "
-          >Please select user.</small
-        >
+        <small class="form-text text-muted">Please select user.</small>
         <select v-model="userid" class="form-select">
           <option
             v-for="singleuser in this.users"
@@ -73,14 +71,21 @@
             <tbody>
               <tr v-for="(action, indof) in actions['0']" :key="indof">
                 <th scope="row">{{ action.id }}</th>
-                <td>{{ action.SubOrder }}</td>
+                <td>
+                  <router-link
+                    :to="{
+                      name: 'singlesuborder',
+                      params: { suborderid: action.SubOrder },
+                    }"
+                    >sub {{ action.SubOrder }}</router-link
+                  >
+                </td>
                 <td>{{ action.User.username }}</td>
                 <td>{{ action.type }}</td>
                 <td>{{ formatdate(action.date) }}</td>
               </tr>
             </tbody>
-            <thead>
-            </thead>
+            <thead></thead>
           </table>
           <!-- end table -->
         </div>
@@ -149,7 +154,14 @@ export default {
       if (this.startdate && this.enddate && this.userid) {
         // console.log(this.startdate + " and " + this.enddate);
         var myurl =
-          URL + "api/useraction/" + this.startdate + "/" + this.enddate + "/"+this.userid+"/";
+          URL +
+          "api/useraction/" +
+          this.startdate +
+          "/" +
+          this.enddate +
+          "/" +
+          this.userid +
+          "/";
         // console.log(myurl)
         await fetch(myurl, {
           method: "GET",
@@ -179,7 +191,6 @@ export default {
       }
       this.loading = false;
     },
-
   },
 };
 </script>

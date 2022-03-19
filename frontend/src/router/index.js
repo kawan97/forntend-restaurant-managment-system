@@ -7,6 +7,8 @@ import WaiterSubOrderView from '../views/WaiterSubOrderView.vue'
 import PayView from '../views/PayView.vue'
 import OrderReportView from '../views/OrderReportView.vue'
 import UserReportView from '../views/UserReportView.vue'
+import SingleSubOrderView from '../views/SingleSubOrderView.vue'
+import SingleOrderView from '../views/SingleOrderView.vue'
 
 const routes = [
   {
@@ -18,6 +20,16 @@ const routes = [
     path: '/order/:tableid',
     name: 'order',
     component: OrderView
+  },
+  {
+    path: '/singlesuborder/:suborderid',
+    name: 'singlesuborder',
+    component: SingleSubOrderView
+  },
+  {
+    path: '/singleorder/:orderid',
+    name: 'singleorder',
+    component: SingleOrderView
   },
   {
     path: '/pay/:tableid',

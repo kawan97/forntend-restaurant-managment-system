@@ -59,7 +59,15 @@
             <tbody>
               <tr v-for="(paym, indof) in payment['0']" :key="indof">
                 <th scope="row">{{ paym.id }}</th>
-                <td>{{ paym.Order.id }}</td>
+                <td>
+                  <router-link
+                    :to="{
+                      name: 'singleorder',
+                      params: { orderid: paym.Order.id },
+                    }"
+                    >order {{ paym.Order.id }}</router-link
+                  >
+                </td>
                 <td>{{ paym.User.username }}</td>
                 <td>{{ paym.total }}</td>
                 <td>{{ formatdate(paym.date) }}</td>
