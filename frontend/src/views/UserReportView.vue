@@ -1,6 +1,6 @@
 <template>
   <div class="text-white">
-    <h1>Get All Payments By Date</h1>
+    <h1>Get All action By Date And User</h1>
     <div class="container">
       <div class="form-group">
         <label for="startdate">Start Date</label>
@@ -28,51 +28,58 @@
           >Please select end date.</small
         >
       </div>
+      <div v-if="users?.length != 0" class="mt-3">
+                <small  class="form-text text-muted "
+          >Please select user.</small
+        >
+        <select v-model="userid" class="form-select">
+          <option
+            v-for="singleuser in this.users"
+            :key="singleuser.id + 'user'"
+            :value="singleuser.id"
+          >
+            {{ singleuser.username }}
+          </option>
+        </select>
+      </div>
       <button class="btn btn-primary mt-2" v-on:click="getreport">
         Get Report
       </button>
       <div v-if="!btnclick" class="mt-4 row">
-        Please select start date and End date and click Get Report
+        Please select start date , End date , User And click Get Report
       </div>
-      <!-- start -->
       <div v-if="loading" class="row">
         <div>
           <div class="spinner-border text-danger" role="status"></div>
         </div>
       </div>
+      <!-- start -->
       <div v-if="!loading">
-        <div v-if="btnclick && payment['0'].length == 0" class="mt-4 row">
-          Sorry we havent any payment during that days
+        <div v-if="btnclick && actions['0'].length == 0" class="mt-4 row">
+          Sorry he/she havent ay action in those days
         </div>
-        <div v-if="btnclick && payment['0'].length > 0" class="mt-4 row">
+        <div v-if="btnclick && actions['0'].length > 0" class="mt-4 row">
           <!-- table -->
           <table class="table table-dark">
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Order</th>
+                <th scope="col">Sub Order</th>
                 <th scope="col">User</th>
-                <th scope="col">Total</th>
+                <th scope="col">Type</th>
                 <th scope="col">Date</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(paym, indof) in payment['0']" :key="indof">
-                <th scope="row">{{ paym.id }}</th>
-                <td>{{ paym.Order.id }}</td>
-                <td>{{ paym.User.username }}</td>
-                <td>{{ paym.total }}</td>
-                <td>{{ formatdate(paym.date) }}</td>
+              <tr v-for="(action, indof) in actions['0']" :key="indof">
+                <th scope="row">{{ action.id }}</th>
+                <td>{{ action.SubOrder }}</td>
+                <td>{{ action.User.username }}</td>
+                <td>{{ action.type }}</td>
+                <td>{{ formatdate(action.date) }}</td>
               </tr>
             </tbody>
             <thead>
-              <tr>
-                <th scope="col"></th>
-                <th scope="col">Total</th>
-                <th scope="col"></th>
-                <th scope="col">{{ sum }}</th>
-                <th scope="col"></th>
-              </tr>
             </thead>
           </table>
           <!-- end table -->
@@ -94,15 +101,43 @@ export default {
   data: function () {
     return {
       roletype: this.$store.getters.user["role"],
-      payment: [],
+      actions: [],
+      users: [],
+      userid: "",
       btnclick: false,
       enddate: "",
-      sum: 0,
       loading: false,
       startdate: "",
     };
   },
-  async beforeCreate() {},
+  async beforeCreate() {
+    this.loading = true;
+    var myurl = URL + "api/users/";
+    // console.log(myurl)
+    await fetch(myurl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.$store.getters.user["access"],
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.detail) {
+          alert(data.detail);
+        }
+        if (data.success) {
+          this.users = [];
+          this.users = data.data;
+          // console.log(this.users);
+          this.loading = false;
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert(error);
+      });
+  },
   methods: {
     formatdate: function (date) {
       if (date) {
@@ -111,10 +146,10 @@ export default {
     },
     getreport: async function () {
       this.loading = true;
-      if (this.startdate && this.enddate) {
+      if (this.startdate && this.enddate && this.userid) {
         // console.log(this.startdate + " and " + this.enddate);
         var myurl =
-          URL + "api/payments/" + this.startdate + "/" + this.enddate + "/";
+          URL + "api/useraction/" + this.startdate + "/" + this.enddate + "/"+this.userid+"/";
         // console.log(myurl)
         await fetch(myurl, {
           method: "GET",
@@ -129,10 +164,9 @@ export default {
               alert(data.detail);
             }
             if (data.success) {
-              this.payment = [];
-              this.payment["0"] = data.data;
-              this.sumallprice();
-              // console.log(this.payment['0'])
+              this.actions = [];
+              this.actions["0"] = data.data;
+              // console.log(this.actions['0'])
               this.btnclick = true;
             }
           })
@@ -141,18 +175,11 @@ export default {
             alert(error);
           });
       } else {
-        alert("start date or end date or both of them are empty");
+        alert("start date or end date or user are empty");
       }
       this.loading = false;
     },
-    sumallprice() {
-      this.sum = 0;
-      var mysum = 0;
-      for (var i = 0; i < this.payment[0].length; i++) {
-        mysum = mysum + parseInt(this.payment[0][i].total);
-      }
-      this.sum = mysum;
-    },
+
   },
 };
 </script>

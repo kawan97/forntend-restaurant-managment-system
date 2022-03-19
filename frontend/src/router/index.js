@@ -6,6 +6,7 @@ import SubOrderView from '../views/SubOrderView.vue'
 import WaiterSubOrderView from '../views/WaiterSubOrderView.vue'
 import PayView from '../views/PayView.vue'
 import OrderReportView from '../views/OrderReportView.vue'
+import UserReportView from '../views/UserReportView.vue'
 
 const routes = [
   {
@@ -29,9 +30,14 @@ const routes = [
     component: SubOrderView
   },
   {
-    path: '/report',
-    name: 'report',
+    path: '/orderreport',
+    name: 'orderreport',
     component: OrderReportView
+  },
+  {
+    path: '/userreport',
+    name: 'userreport',
+    component: UserReportView
   },
   {
     path: '/waitersuborder',
