@@ -11,6 +11,7 @@ import SingleSubOrderView from '../views/SingleSubOrderView.vue'
 import SingleOrderView from '../views/SingleOrderView.vue'
 import AddEquipmentView from '../views/AddEquipmentView.vue'
 import EquipmentsReportView from '../views/EquipmentsReportView.vue'
+import MonthlyReportView from '../views/MonthlyReportView.vue'
 
 const routes = [
   {
@@ -27,6 +28,11 @@ const routes = [
     path: '/addequipment',
     name: 'addequipment',
     component: AddEquipmentView
+  },
+  {
+    path: '/monthlyreport',
+    name: 'monthlyreport',
+    component: MonthlyReportView
   },
   {
     path: '/equipmentreport',
