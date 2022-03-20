@@ -12,6 +12,7 @@ import SingleOrderView from '../views/SingleOrderView.vue'
 import AddEquipmentView from '../views/AddEquipmentView.vue'
 import EquipmentsReportView from '../views/EquipmentsReportView.vue'
 import MonthlyReportView from '../views/MonthlyReportView.vue'
+import AddFeedback from '../views/AddFeedback.vue'
 
 const routes = [
   {
@@ -24,6 +25,12 @@ const routes = [
     name: 'order',
     component: OrderView
   },
+  {
+    path: '/addfeedback/:orderid/:key',
+    name: 'addfeedback',
+    component: AddFeedback
+  },
+
   {
     path: '/addequipment',
     name: 'addequipment',
