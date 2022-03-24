@@ -6,7 +6,6 @@
     <nav v-bind:class="{ show: show }" class="sidebar">
       <div id="mytitle" class="text" v-on:click="toggle">rest</div>
       <ul class="main_side">
-
         <!-- admin navigation -->
         <div v-if="this.$store.getters.user['role'] == 'admin'">
           <li :class="{ active: this.$route.name == 'home' }">
@@ -67,7 +66,7 @@
             <p v-on:click="logout"><img src="@/assets/svg/left.svg" />Logout</p>
           </li>
         </div>
-          <!-- admin navigation -->
+        <!-- admin navigation -->
 
         <!-- captain navigation -->
         <div v-if="this.$store.getters.user['role'] == 'captain'">
@@ -83,9 +82,40 @@
             <p v-on:click="logout"><img src="@/assets/svg/left.svg" />Logout</p>
           </li>
         </div>
-          <!-- captain navigation -->
+        <!-- captain navigation -->
 
-          
+        <!-- chef navigation -->
+        <div v-if="this.$store.getters.user['role'] == 'chef'">
+          <li :class="{ active: this.$route.name == 'suborder' }">
+            <router-link
+              :to="{
+                name: 'suborder',
+              }"
+              >Home</router-link
+            >
+          </li>
+          <li>
+            <p v-on:click="logout"><img src="@/assets/svg/left.svg" />Logout</p>
+          </li>
+        </div>
+        <!-- chef navigation -->
+
+        <!-- waiter navigation -->
+        <div v-if="this.$store.getters.user['role'] == 'waiter'">
+          <li :class="{ active: this.$route.name == 'waitersuborder' }">
+            <router-link
+              :to="{
+                name: 'waitersuborder',
+              }"
+              >Home</router-link
+            >
+          </li>
+          <li>
+            <p v-on:click="logout"><img src="@/assets/svg/left.svg" />Logout</p>
+          </li>
+        </div>
+        <!-- waiter navigation -->
+
         <li>
           <p v-on:click="toggle"><img src="@/assets/svg/left.svg" />Hide</p>
         </li>

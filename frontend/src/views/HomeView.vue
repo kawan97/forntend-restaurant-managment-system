@@ -1,8 +1,7 @@
 <template>
   <div class=" text-white">
-    <h1>Tables For Captain</h1>
+    <h1>Tables For {{roletype}}</h1>
     <div class="container text-black">
-      <button v-on:click="sendmsg">send msg</button>
       <div class="row">
         <div v-for="singletb in this.$store.getters.table" :key="singletb.id" class="col-12 col-lg-4 col-xl-4 col-md-6 mb-4">
         <Card :type='roletype' :tablename='singletb["name"]' :status="singletb['status']" :id='singletb["id"]' />
@@ -78,8 +77,8 @@ export default {
   },
   methods:{
     sendmsg:function(){
-       var data={"value":'myvalue','event':'suborderstatuschange'}
-    this.ws.send(JSON.stringify(data));
+    //    var data={"value":'myvalue','event':'suborderstatuschange'}
+    // this.ws.send(JSON.stringify(data));
     },
   }
 
