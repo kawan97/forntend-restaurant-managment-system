@@ -62,7 +62,7 @@
         <!-- Modal -->
         <div
           class="modal text-dark"
-          :class="{ displayedclass: isActive }"
+          :class="{ displayedclass: isActive,hiddenn:!isActive }"
           tabindex="-1"
           id="staticBackdrop"
         >
@@ -268,8 +268,22 @@ export default {
 };
 </script>
 <style scoped>
+.modal{
+    display: block;
+    transition: all .3s ease;
+
+}
 .displayedclass {
-  display: block;
+  visibility: visible;
+  opacity: 1;
+
+}
+
+.hiddenn {
+  visibility: hidden;
+  opacity: 0;
+
+
 }
 .overlay {
   height: 100%;

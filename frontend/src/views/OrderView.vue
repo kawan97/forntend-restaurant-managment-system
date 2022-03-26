@@ -8,7 +8,7 @@
         </div>
       </div>
       <div v-if="order.length == 1" class="row text-white">
-        Order id= {{ this.order[0]["id"] }}
+        <h4>Order id= {{ this.order[0]["id"] }}</h4>
         <div
           v-if="
             order[0] &&
@@ -34,15 +34,37 @@
             v-for="(subs, indexofsub) in this.order[0]['suborderorder']"
             :key="subs.id + 'asa'"
           >
-            <li :class="{ 'text-success': subs.status != 'ordering' }">
+            <li class="text-start" :class="{ 'text-success': subs.status != 'ordering' }">
               Sub order :{{ subs.id }} ,and Status : {{ subs.status }}
-              <div
-                v-for="(item, index) in subs['orderitemsuborder']"
-                :key="item.id"
-              >
-                {{ index + 1 }} : {{ item.SubItem["name"] }} :
-                {{ item.SubItem["item_price"] }}
-              </div>
+              <!-- table -->
+              <table class="table table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">Number</th>
+                    <th scope="col">Item Name</th>
+                    <th scope="col">Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="(item, index) in subs['orderitemsuborder']"
+                    :key="item.id"
+                  >
+                    <th scope="row">{{ index + 1 }}</th>
+                    <td>{{ item.SubItem["name"] }}</td>
+                    <td>{{ item.SubItem["item_price"] }}</td>
+                  </tr>
+                </tbody>
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+              </table>
               <div v-if="subs.status == 'ordering'">
                 <button
                   v-if="subs['orderitemsuborder'].length > 0"
@@ -133,7 +155,7 @@ export default {
     })
       .then((response) => response.json())
       .then((data) => {
-                             //permission check
+        //permission check
         if (data.permission) {
           alert(data.permission);
           if (data.role == "chef") {
@@ -232,8 +254,8 @@ export default {
                 return x;
               }
             });
-            self.order["0"].suborderorder=[]
-            self.order["0"].suborderorder=map1
+            self.order["0"].suborderorder = [];
+            self.order["0"].suborderorder = map1;
           }
         } else if (data.event == "orderiscreated") {
           console.log("now order is created");
@@ -274,26 +296,26 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
-                               //permission check
-        if (data.permission) {
-          alert(data.permission);
-          if (data.role == "chef") {
-            this.$router.push({
-              name: "suborder",
-            });
+          //permission check
+          if (data.permission) {
+            alert(data.permission);
+            if (data.role == "chef") {
+              this.$router.push({
+                name: "suborder",
+              });
+            }
+            if (data.role == "waiter") {
+              this.$router.push({
+                name: "waitersuborder",
+              });
+            }
+            if (data.role == "admin" || data.role == "captain") {
+              this.$router.push({
+                name: "home",
+              });
+            }
           }
-          if (data.role == "waiter") {
-            this.$router.push({
-              name: "waitersuborder",
-            });
-          }
-          if (data.role == "admin" || data.role == "captain") {
-            this.$router.push({
-              name: "home",
-            });
-          }
-        }
-        //permission check
+          //permission check
           if (data.error) {
             alert(data.error);
           }
@@ -333,26 +355,26 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
-                               //permission check
-        if (data.permission) {
-          alert(data.permission);
-          if (data.role == "chef") {
-            this.$router.push({
-              name: "suborder",
-            });
+          //permission check
+          if (data.permission) {
+            alert(data.permission);
+            if (data.role == "chef") {
+              this.$router.push({
+                name: "suborder",
+              });
+            }
+            if (data.role == "waiter") {
+              this.$router.push({
+                name: "waitersuborder",
+              });
+            }
+            if (data.role == "admin" || data.role == "captain") {
+              this.$router.push({
+                name: "home",
+              });
+            }
           }
-          if (data.role == "waiter") {
-            this.$router.push({
-              name: "waitersuborder",
-            });
-          }
-          if (data.role == "admin" || data.role == "captain") {
-            this.$router.push({
-              name: "home",
-            });
-          }
-        }
-        //permission check
+          //permission check
           if (data.error) {
             alert(data.error);
           }
@@ -392,26 +414,26 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
-                               //permission check
-        if (data.permission) {
-          alert(data.permission);
-          if (data.role == "chef") {
-            this.$router.push({
-              name: "suborder",
-            });
+          //permission check
+          if (data.permission) {
+            alert(data.permission);
+            if (data.role == "chef") {
+              this.$router.push({
+                name: "suborder",
+              });
+            }
+            if (data.role == "waiter") {
+              this.$router.push({
+                name: "waitersuborder",
+              });
+            }
+            if (data.role == "admin" || data.role == "captain") {
+              this.$router.push({
+                name: "home",
+              });
+            }
           }
-          if (data.role == "waiter") {
-            this.$router.push({
-              name: "waitersuborder",
-            });
-          }
-          if (data.role == "admin" || data.role == "captain") {
-            this.$router.push({
-              name: "home",
-            });
-          }
-        }
-        //permission check
+          //permission check
           if (data.success) {
             this.order[0].suborderorder.push(data.data);
             this.subbtnloading = false;
@@ -446,26 +468,26 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
-                               //permission check
-        if (data.permission) {
-          alert(data.permission);
-          if (data.role == "chef") {
-            this.$router.push({
-              name: "suborder",
-            });
+          //permission check
+          if (data.permission) {
+            alert(data.permission);
+            if (data.role == "chef") {
+              this.$router.push({
+                name: "suborder",
+              });
+            }
+            if (data.role == "waiter") {
+              this.$router.push({
+                name: "waitersuborder",
+              });
+            }
+            if (data.role == "admin" || data.role == "captain") {
+              this.$router.push({
+                name: "home",
+              });
+            }
           }
-          if (data.role == "waiter") {
-            this.$router.push({
-              name: "waitersuborder",
-            });
-          }
-          if (data.role == "admin" || data.role == "captain") {
-            this.$router.push({
-              name: "home",
-            });
-          }
-        }
-        //permission check
+          //permission check
           if (data.error) {
             alert(data.error);
           }
