@@ -47,6 +47,26 @@ export default createStore({
         })
           .then((response) => response.json())
           .then((data) => {
+                     //permission check
+        if (data.permission) {
+          alert(data.permission);
+          if (data.role == "chef") {
+            router.push({
+              name: "suborder",
+            });
+          }
+          if (data.role == "waiter") {
+            router.push({
+              name: "waitersuborder",
+            });
+          }
+          if (data.role == "admin" || data.role == "captain") {
+            router.push({
+              name: "home",
+            });
+          }
+        }
+        //permission check
             if (data.detail) {
               alert(data.detail);
             } else {
@@ -112,6 +132,26 @@ export default createStore({
       })
         .then((response) => response.json())
         .then((data) => {
+          //permission check
+        if (data.permission) {
+          alert(data.permission);
+          if (data.role == "chef") {
+            router.push({
+              name: "suborder",
+            });
+          }
+          if (data.role == "waiter") {
+            router.push({
+              name: "waitersuborder",
+            });
+          }
+          if (data.role == "admin" || data.role == "captain") {
+            router.push({
+              name: "home",
+            });
+          }
+        }
+        //permission check
           if (data.detail) {
             alert(data.detail);
             dispatch({ type: "logout" });

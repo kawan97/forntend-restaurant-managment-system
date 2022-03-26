@@ -133,6 +133,26 @@ export default {
     })
       .then((response) => response.json())
       .then((data) => {
+                             //permission check
+        if (data.permission) {
+          alert(data.permission);
+          if (data.role == "chef") {
+            this.$router.push({
+              name: "suborder",
+            });
+          }
+          if (data.role == "waiter") {
+            this.$router.push({
+              name: "waitersuborder",
+            });
+          }
+          if (data.role == "admin" || data.role == "captain") {
+            this.$router.push({
+              name: "home",
+            });
+          }
+        }
+        //permission check
         if (data.detail) {
           alert(data.detail);
         } else {
@@ -254,6 +274,26 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
+                               //permission check
+        if (data.permission) {
+          alert(data.permission);
+          if (data.role == "chef") {
+            this.$router.push({
+              name: "suborder",
+            });
+          }
+          if (data.role == "waiter") {
+            this.$router.push({
+              name: "waitersuborder",
+            });
+          }
+          if (data.role == "admin" || data.role == "captain") {
+            this.$router.push({
+              name: "home",
+            });
+          }
+        }
+        //permission check
           if (data.error) {
             alert(data.error);
           }
@@ -293,6 +333,26 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
+                               //permission check
+        if (data.permission) {
+          alert(data.permission);
+          if (data.role == "chef") {
+            this.$router.push({
+              name: "suborder",
+            });
+          }
+          if (data.role == "waiter") {
+            this.$router.push({
+              name: "waitersuborder",
+            });
+          }
+          if (data.role == "admin" || data.role == "captain") {
+            this.$router.push({
+              name: "home",
+            });
+          }
+        }
+        //permission check
           if (data.error) {
             alert(data.error);
           }
@@ -332,6 +392,26 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
+                               //permission check
+        if (data.permission) {
+          alert(data.permission);
+          if (data.role == "chef") {
+            this.$router.push({
+              name: "suborder",
+            });
+          }
+          if (data.role == "waiter") {
+            this.$router.push({
+              name: "waitersuborder",
+            });
+          }
+          if (data.role == "admin" || data.role == "captain") {
+            this.$router.push({
+              name: "home",
+            });
+          }
+        }
+        //permission check
           if (data.success) {
             this.order[0].suborderorder.push(data.data);
             this.subbtnloading = false;
@@ -366,6 +446,26 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
+                               //permission check
+        if (data.permission) {
+          alert(data.permission);
+          if (data.role == "chef") {
+            this.$router.push({
+              name: "suborder",
+            });
+          }
+          if (data.role == "waiter") {
+            this.$router.push({
+              name: "waitersuborder",
+            });
+          }
+          if (data.role == "admin" || data.role == "captain") {
+            this.$router.push({
+              name: "home",
+            });
+          }
+        }
+        //permission check
           if (data.error) {
             alert(data.error);
           }
