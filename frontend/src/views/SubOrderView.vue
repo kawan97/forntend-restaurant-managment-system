@@ -62,7 +62,7 @@
         <!-- Modal -->
         <div
           class="modal text-dark"
-          :class="{ displayedclass: isActive,hiddenn:!isActive }"
+          :class="{ displayedclass: isActive, hiddenn: !isActive }"
           tabindex="-1"
           id="staticBackdrop"
         >
@@ -141,6 +141,18 @@ export default {
           console.log("now suborder status changede");
           if (data.data.data.status == "sendingtochef") {
             self.suborder.push(data.data.data);
+          }
+          if (data.data.data.status == "orderisready") {
+            var newarray = self.suborder;
+             self.suborder = [];
+            var map1 = newarray.map((x) => {
+              if (x.id != data.data.data.id) {
+                self.suborder.push(x)
+              }
+            });
+            if (data.data.data.id == self.singlesuborder.id) {
+              self.closemodal();
+            }
           }
         }
         //end check if
@@ -268,22 +280,18 @@ export default {
 };
 </script>
 <style scoped>
-.modal{
-    display: block;
-    transition: all .3s ease;
-
+.modal {
+  display: block;
+  transition: all 0.3s ease;
 }
 .displayedclass {
   visibility: visible;
   opacity: 1;
-
 }
 
 .hiddenn {
   visibility: hidden;
   opacity: 0;
-
-
 }
 .overlay {
   height: 100%;

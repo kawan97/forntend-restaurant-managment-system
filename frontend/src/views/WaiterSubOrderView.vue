@@ -186,6 +186,18 @@ export default {
           if (data.data.data.status == "orderisready") {
             self.suborder.push(data.data.data);
           }
+          if (data.data.data.status == "waiterserving") {
+            var newarray = self.suborder;
+             self.suborder = [];
+            var map1 = newarray.map((x) => {
+              if (x.id != data.data.data.id) {
+                self.suborder.push(x)
+              }
+            });
+            if (data.data.data.id == self.singlesuborder.id) {
+              self.closemodal();
+            }
+          }
         }
         //end check if
       }
@@ -194,7 +206,7 @@ export default {
   methods: {
     opensinglesuborder: function (singlesuborder) {
       this.singlesuborderloading = true;
-      this.isActive=true
+      this.isActive = true;
       this.singlesuborder = singlesuborder;
       this.singlesuborderloading = false;
     },
