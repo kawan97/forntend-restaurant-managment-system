@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white">
+  <div class="row text-white ">
     <h1>Order On Table {{ this.$route.params.tableid }}</h1>
     <div class="container text-black">
       <div v-if="loading" class="row">
@@ -30,11 +30,14 @@
           </button>
         </div>
         <div v-if="this.order[0]['suborderorder'].length > 0">
-          <ul
+          <div
             v-for="(subs, indexofsub) in this.order[0]['suborderorder']"
             :key="subs.id + 'asa'"
           >
-            <li class="text-start" :class="{ 'text-success': subs.status != 'ordering' }">
+            <div
+              class="text-start"
+              :class="{ 'text-success': subs.status != 'ordering' }"
+            >
               Sub order :{{ subs.id }} ,and Status : {{ subs.status }}
               <!-- table -->
               <table class="table table-dark">
@@ -78,29 +81,38 @@
                   v-for="foodtype in this.$store.getters.food"
                   :key="foodtype.id + 'sss'"
                 >
-                  <div>-type: {{ foodtype.name }}</div>
-                  <ul
-                    v-for="itemfood in foodtype.subitem"
-                    :key="itemfood.id + 'asas'"
-                  >
-                    {{
-                      itemfood.name
-                    }}|{{
-                      itemfood.item_price
-                    }}
-                    <button
-                      v-on:click="
-                        additemtosuborder(subs.id, itemfood.id, indexofsub)
-                      "
-                      class="btn btn-outline-warning"
+                  <div class="h2">type: {{ foodtype.name }}</div>
+                  <div class="row ">
+                    <div class="col-3 my-2"
+                      v-for="itemfood in foodtype.subitem"
+                      :key="itemfood.id + 'assafr'"
                     >
-                      Add
-                    </button>
-                  </ul>
+                      <!-- cards -->
+                      <div class="card " >
+                        <div class="card-body bg-purple">
+                          <h5 class="card-text">{{ itemfood.name }}</h5>
+                          <h3 class="card-text">{{ itemfood.item_price }}</h3>
+                          <button
+                            v-on:click="
+                              additemtosuborder(
+                                subs.id,
+                                itemfood.id,
+                                indexofsub
+                              )
+                            "
+                            class="btn btn-outline-warning"
+                          >
+                            Add
+                          </button>
+                        </div>
+                      </div>
+                      <!-- cards -->
+                    </div>
+                  </div>
                 </div>
               </div>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
         <div v-if="this.order[0]['suborderorder'].length == 0">
           <div>You Dont Have Sub Order</div>
@@ -133,9 +145,16 @@
 // @ is an alias to /src
 // import Card from '@/components/Card.vue'
 import { URL, WSURL } from "../store/const.js";
-
-export default {
+import { defineComponent } from "vue";
+import { Carousel, Navigation, Slide, Pagination } from "vue3-carousel";
+export default defineComponent({
   name: "OrderView",
+  components: {
+    Carousel,
+    Slide,
+    Navigation,
+    Pagination,
+  },
   data: function () {
     return {
       loading: true,
@@ -146,7 +165,10 @@ export default {
     };
   },
   async beforeCreate() {
-        if (this.$store.getters.user["role"] != "admin" && this.$store.getters.user["role"] != "captain") {
+    if (
+      this.$store.getters.user["role"] != "admin" &&
+      this.$store.getters.user["role"] != "captain"
+    ) {
       this.$store.dispatch({ type: "logout" });
     }
     await fetch(URL + "api/tables/" + this.$route.params.tableid, {
@@ -202,7 +224,6 @@ export default {
 
     //end before create
   },
-  components: {},
   created() {
     this.ws = new WebSocket(WSURL);
     var self = this;
@@ -522,7 +543,7 @@ export default {
         });
     },
   },
-};
+});
 </script>
 <style scoped>
 .btn-red {
@@ -544,5 +565,19 @@ export default {
   color: #d34605;
   background: #052631;
   border-left-color: #052631;
+}
+.bg-purple {
+  background-color: #703504;
+  color: #ffffff;
+  /* fbe766 */
+}
+.btn-outline-yallow {
+  color: #fbe766;
+  border-color: #fbe766;
+}
+.btn-outline-yallow:hover {
+  color: #703504;
+  background-color: #fbe766;
+  border-color: #fbe766;
 }
 </style>

@@ -1,27 +1,44 @@
 <template>
-  <div>
-
-    <h1 class="text-white">sssssss</h1>
-    <Carousel :items-to-show="6" :wrap-around="true">
-      <Slide v-for="slide in 10" :key="slide">
-        <div class="carousel__item">
-          <!-- cards -->
-          <div class="card my-3 mx-5" style="width: 18rem">
-            <div class="card-body bg-purple">
-              <h3 class="card-text">Item Name {{ slide }}</h3>
-              <h3 class="card-text">500</h3>
-              <button class="btn btn-outline-yallow">Add</button>
-            </div>
-          </div>
-          <!-- cards -->
+    <div class="container-fluid">
+    <div class="row flex-row flex-nowrap text-white">
+        <div class="col-3">
+           ..
         </div>
-      </Slide>
-      <template #addons>
-        <Navigation />
-        <Pagination />
-      </template>
-    </Carousel>
-  </div>
+        <div class="col-3">
+           ..
+        </div>     <div class="col-3">
+           ..
+        </div>     <div class="col-3">
+           ..
+        </div>     <div class="col-3">
+           ..
+        </div>     <div class="col-3">
+           ..
+        </div>     <div class="col-3">
+           ..
+        </div>     <div class="col-3">
+           ..
+        </div>
+        <div class="col-3">
+           ..
+        </div>
+        <div class="col-3">
+           ..
+        </div>
+        <div class="col-3">
+           ..
+        </div>
+        <div class="col-3">
+           ..
+        </div>
+        <div class="col-3">
+           ..
+        </div>
+        <div class="col-3">
+           ..
+        </div>
+    </div>
+</div>
 </template>
 
 <script>
@@ -36,6 +53,7 @@ export default defineComponent({
     Carousel,
     Slide,
     Navigation,
+    Pagination,
   },
 });
 </script>
@@ -53,5 +71,32 @@ export default defineComponent({
   color: #703504;
   background-color: #fbe766;
   border-color: #fbe766;
+}
+/* The heart of the matter */
+
+.horizontal-scrollable > .row {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.horizontal-scrollable > .row > .col-xs-4 {
+  display: inline-block;
+  float: none;
+}
+/* Decorations */
+
+.col-xs-4 {
+  color: white;
+  font-size: 24px;
+  padding-bottom: 20px;
+  padding-top: 18px;
+}
+
+.col-xs-4:nth-child(2n + 1) {
+  background: green;
+}
+
+.col-xs-4:nth-child(2n + 2) {
+  background: black;
 }
 </style>
