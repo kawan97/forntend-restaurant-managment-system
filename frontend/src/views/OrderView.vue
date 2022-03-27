@@ -20,7 +20,7 @@
           <div>Add another sub order to this order</div>
           <button
             v-on:click="addsuborder(this.order[0]['id'])"
-            class="btn btn-darkblue"
+            class="btn btn-outline-info"
           >
             <span
               v-if="subbtnloading"
@@ -69,7 +69,7 @@
                 <button
                   v-if="subs['orderitemsuborder'].length > 0"
                   v-on:click="orderstatuschange(subs.id, indexofsub)"
-                  class="btn btn-darkblue"
+                  class="btn btn-outline-danger mb-4"
                 >
                   Send this sub order to chef
                 </button>
@@ -92,7 +92,7 @@
                       v-on:click="
                         additemtosuborder(subs.id, itemfood.id, indexofsub)
                       "
-                      class="btn btn-red"
+                      class="btn btn-outline-warning"
                     >
                       Add
                     </button>
@@ -106,7 +106,7 @@
           <div>You Dont Have Sub Order</div>
           <button
             v-on:click="addsuborder(this.order[0]['id'])"
-            class="btn btn-darkblue"
+            class="btn btn-outline-info"
           >
             <span
               v-if="btnloading"
@@ -117,7 +117,7 @@
         </div>
       </div>
       <div v-if="loading == false && order.length == 0" class="row">
-        <button v-on:click="addorder" class="btn btn-darkblue">
+        <button v-on:click="addorder" class="btn btn-outline-success">
           <span
             v-if="btnloading"
             class="spinner-border spinner-border-sm"
