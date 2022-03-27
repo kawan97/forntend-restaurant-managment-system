@@ -36,6 +36,9 @@ export default {
     };
   },
   async beforeCreate() {
+        if (this.$store.getters.user["role"] != "admin" && this.$store.getters.user["role"] != "captain") {
+      this.$store.dispatch({ type: "logout" });
+    }
     if(!parseInt(this.$route.params.suborderid)){
       return null;
     }

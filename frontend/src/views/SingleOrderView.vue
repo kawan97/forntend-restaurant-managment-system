@@ -42,6 +42,11 @@ import { URL } from "../store/const.js";
 
 export default {
   name: "SingleSubOrderView",
+    async beforeCreate() {
+    if (this.$store.getters.user["role"] != "admin" && this.$store.getters.user["role"] != "captain") {
+      this.$store.dispatch({ type: "logout" });
+    }
+  },
   data: function () {
     return {
       loading: true,

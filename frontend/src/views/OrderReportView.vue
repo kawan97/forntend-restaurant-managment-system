@@ -99,6 +99,11 @@ import moment from "moment";
 
 export default {
   name: "OrderReportView",
+    async beforeCreate() {
+    if (this.$store.getters.user["role"] != "admin") {
+      this.$store.dispatch({ type: "logout" });
+    }
+  },
   data: function () {
     return {
       roletype: this.$store.getters.user["role"],

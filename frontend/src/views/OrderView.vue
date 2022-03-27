@@ -146,6 +146,9 @@ export default {
     };
   },
   async beforeCreate() {
+        if (this.$store.getters.user["role"] != "admin" && this.$store.getters.user["role"] != "captain") {
+      this.$store.dispatch({ type: "logout" });
+    }
     await fetch(URL + "api/tables/" + this.$route.params.tableid, {
       method: "GET",
       headers: {

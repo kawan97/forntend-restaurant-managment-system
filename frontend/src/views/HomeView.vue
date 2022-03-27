@@ -1,10 +1,19 @@
 <template>
-  <div class=" text-white">
-    <h1>Tables For {{roletype}}</h1>
+  <div class="text-white">
+    <h1>Tables For {{ roletype }}</h1>
     <div class="container text-black">
       <div class="row">
-        <div v-for="singletb in this.$store.getters.table" :key="singletb.id" class="col-12 col-lg-4 col-xl-4 col-md-6 mb-4">
-        <Card :type='roletype' :tablename='singletb["name"]' :status="singletb['status']" :id='singletb["id"]' />
+        <div
+          v-for="singletb in this.$store.getters.table"
+          :key="singletb.id"
+          class="col-12 col-lg-4 col-xl-4 col-md-6 mb-4"
+        >
+          <Card
+            :type="roletype"
+            :tablename="singletb['name']"
+            :status="singletb['status']"
+            :id="singletb['id']"
+          />
         </div>
       </div>
     </div>
@@ -13,29 +22,31 @@
 
 <script>
 // @ is an alias to /src
-import Navbar from '@/components/Navbar.vue'
-import Card from '@/components/Card.vue'
-import {WSURL} from '../store/const.js'
+import Navbar from "@/components/Navbar.vue";
+import Card from "@/components/Card.vue";
+import { WSURL } from "../store/const.js";
 export default {
-  name: 'HomeView',
-    data: function () {
+  name: "HomeView",
+  data: function () {
     return {
       roletype: this.$store.getters.user["role"],
-      ws:null,
-      
+      ws: null,
     };
   },
-    async beforeCreate() {
-    await this.$store.dispatch({type: 'getalltable'})
+  async beforeCreate() {
+    if (this.$store.getters.user["role"] != "admin" && this.$store.getters.user["role"] != "captain") {
+      this.$store.dispatch({ type: "logout" });
+    }
+    await this.$store.dispatch({ type: "getalltable" });
   },
   components: {
     Navbar,
-    Card
+    Card,
   },
-  created(){
-        var self = this;
-       this.ws=new WebSocket(WSURL);
-    this.ws.onmessage=function(e){
+  created() {
+    var self = this;
+    this.ws = new WebSocket(WSURL);
+    this.ws.onmessage = function (e) {
       var data = JSON.parse(e.data);
       if (data.username != self.$store.getters.user["username"]) {
         //check event
@@ -43,7 +54,10 @@ export default {
           console.log("now table status changed");
           // console.log(data);
           // console.log(self.$store.getters.table.length);
-          if (self.$store.getters.table && self.$store.getters.table.length > 0) {
+          if (
+            self.$store.getters.table &&
+            self.$store.getters.table.length > 0
+          ) {
             // console.log("sssssssssssssssssss");
             var newarray = self.$store.getters.table;
             var map1 = newarray.map((x) => {
@@ -73,15 +87,13 @@ export default {
         }
         //end check if
       }
-    }
+    };
   },
-  methods:{
-    sendmsg:function(){
-    //    var data={"value":'myvalue','event':'suborderstatuschange'}
-    // this.ws.send(JSON.stringify(data));
+  methods: {
+    sendmsg: function () {
+      //    var data={"value":'myvalue','event':'suborderstatuschange'}
+      // this.ws.send(JSON.stringify(data));
     },
-  }
-
-
-}
+  },
+};
 </script>

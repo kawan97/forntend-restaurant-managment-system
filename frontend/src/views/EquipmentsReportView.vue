@@ -102,6 +102,11 @@ export default {
       sum: 0,
     };
   },
+    async beforeCreate() {
+    if (this.$store.getters.user["role"] != "admin") {
+      this.$store.dispatch({ type: "logout" });
+    }
+  },
   methods: {
     formatdate: function (date) {
       if (date) {

@@ -51,6 +51,7 @@ import { URL } from "../store/const.js";
 
 export default {
   name: "AddFeedback",
+  
   data: function () {
     return {
       btnclick: false,

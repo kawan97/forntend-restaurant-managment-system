@@ -120,6 +120,11 @@ import { URL, WSURL } from "../store/const.js";
 
 export default {
   name: "SubOrderView",
+    async beforeCreate() {
+    if (this.$store.getters.user["role"] != "chef") {
+      this.$store.dispatch({ type: "logout" });
+    }
+  },
   data: function () {
     return {
       loading: true,

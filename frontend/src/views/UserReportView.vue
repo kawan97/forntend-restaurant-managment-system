@@ -103,6 +103,11 @@ import moment from "moment";
 
 export default {
   name: "OrderReportView",
+  async beforeCreate() {
+    if (this.$store.getters.user["role"] != "admin") {
+      this.$store.dispatch({ type: "logout" });
+    }
+  },
   data: function () {
     return {
       roletype: this.$store.getters.user["role"],
@@ -128,7 +133,7 @@ export default {
     })
       .then((response) => response.json())
       .then((data) => {
-                             //permission check
+        //permission check
         if (data.permission) {
           alert(data.permission);
           if (data.role == "chef") {
@@ -158,8 +163,7 @@ export default {
           this.loading = false;
         }
 
-        
-         //permission check
+        //permission check
         if (data.permission) {
           alert(data.permission);
           if (data.role == "chef") {
@@ -214,26 +218,26 @@ export default {
         })
           .then((response) => response.json())
           .then((data) => {
-                                 //permission check
-        if (data.permission) {
-          alert(data.permission);
-          if (data.role == "chef") {
-            this.$router.push({
-              name: "suborder",
-            });
-          }
-          if (data.role == "waiter") {
-            this.$router.push({
-              name: "waitersuborder",
-            });
-          }
-          if (data.role == "admin" || data.role == "captain") {
-            this.$router.push({
-              name: "home",
-            });
-          }
-        }
-        //permission check
+            //permission check
+            if (data.permission) {
+              alert(data.permission);
+              if (data.role == "chef") {
+                this.$router.push({
+                  name: "suborder",
+                });
+              }
+              if (data.role == "waiter") {
+                this.$router.push({
+                  name: "waitersuborder",
+                });
+              }
+              if (data.role == "admin" || data.role == "captain") {
+                this.$router.push({
+                  name: "home",
+                });
+              }
+            }
+            //permission check
             if (data.detail) {
               alert(data.detail);
             }

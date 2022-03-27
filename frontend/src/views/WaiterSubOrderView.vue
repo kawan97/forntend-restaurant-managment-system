@@ -119,6 +119,11 @@ import { URL, WSURL } from "../store/const.js";
 
 export default {
   name: "WaiterSubOrderView",
+  async beforeCreate() {
+    if (this.$store.getters.user["role"] != "waiter") {
+      this.$store.dispatch({ type: "logout" });
+    }
+  },
   data: function () {
     return {
       loading: true,
@@ -188,10 +193,10 @@ export default {
           }
           if (data.data.data.status == "waiterserving") {
             var newarray = self.suborder;
-             self.suborder = [];
+            self.suborder = [];
             var map1 = newarray.map((x) => {
               if (x.id != data.data.data.id) {
-                self.suborder.push(x)
+                self.suborder.push(x);
               }
             });
             if (data.data.data.id == self.singlesuborder.id) {

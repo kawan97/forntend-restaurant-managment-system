@@ -106,6 +106,11 @@ import { URL } from "../store/const.js";
 
 export default {
   name: "MonthlyReportView",
+    async beforeCreate() {
+    if (this.$store.getters.user["role"] != "admin") {
+      this.$store.dispatch({ type: "logout" });
+    }
+  },
   data: function () {
     return {
       roletype: this.$store.getters.user["role"],

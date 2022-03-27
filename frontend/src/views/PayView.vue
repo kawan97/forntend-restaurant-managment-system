@@ -71,6 +71,11 @@ import { URL, WSURL } from "../store/const.js";
 
 export default {
   name: "PayView",
+    async beforeCreate() {
+    if (this.$store.getters.user["role"] != "admin") {
+      this.$store.dispatch({ type: "logout" });
+    }
+  },
   data: function () {
     return {
       loading: true,
