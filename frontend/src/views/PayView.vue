@@ -8,14 +8,17 @@
         </div>
       </div>
       <div v-if="order.length == 1" class="row text-white">
-       <h4> Order id= {{ this.order[0]["id"] }}</h4>
+        <h4>Order id= {{ this.order[0]["id"] }}</h4>
 
         <div v-if="this.order[0]['suborderorder'].length > 0">
           <ul
             v-for="(subs, indexofsub) in this.order[0]['suborderorder']"
             :key="subs.id + 'asa'"
           >
-            <li class="text-start" :class="{ 'text-success': subs.status != 'ordering' }">
+            <li
+              class="text-start"
+              :class="{ 'text-success': subs.status != 'ordering' }"
+            >
               Sub order :{{ subs.id }} ,and Status : {{ subs.status }}
               <!-- table -->
               <table class="table table-dark">
@@ -55,6 +58,10 @@
             ></span>
             Pay It
           </button>
+          <br />
+          <button v-on:click="getreport" class="btn btn-success mt-2">
+            Get Report
+          </button>
         </div>
         <div v-if="this.order[0]['suborderorder'].length == 0">
           <div>You Dont Have Sub Order</div>
@@ -71,7 +78,7 @@ import { URL, WSURL } from "../store/const.js";
 
 export default {
   name: "PayView",
-    async beforeCreate() {
+  async beforeCreate() {
     if (this.$store.getters.user["role"] != "admin") {
       this.$store.dispatch({ type: "logout" });
     }
@@ -224,6 +231,14 @@ export default {
     }
   },
   methods: {
+    getreport: function () {
+      var myport=window.location.port
+      var myhostname=window.location.hostname
+      var finalurl=myhostname+':'+myport
+      // console.log(myhostname+':'+myport)
+      var token = this.$store.getters.user["access"];
+      window.open(URL +'finalreport/'+ this.order[0].id + "/" + token+'/'+finalurl, "_blank");
+    },
     updatesum: function () {
       this.sumofsub = [];
       this.totalsum = 0;
