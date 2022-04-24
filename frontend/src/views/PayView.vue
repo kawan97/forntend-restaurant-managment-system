@@ -62,6 +62,16 @@
           <button v-on:click="getreport" class="btn btn-success mt-2">
             Get Report
           </button>
+          <br />          <br />
+
+          <button v-on:click="printorder" class="btn btn-warning">
+            <span
+              v-if="btnloading"
+              class="spinner-border spinner-border-sm"
+            ></span>
+            Print Order
+          </button>
+          <br />
         </div>
         <div v-if="this.order[0]['suborderorder'].length == 0">
           <div>You Dont Have Sub Order</div>
@@ -232,12 +242,15 @@ export default {
   },
   methods: {
     getreport: function () {
-      var myport=window.location.port
-      var myhostname=window.location.hostname
-      var finalurl=myhostname+':'+myport
+      var myport = window.location.port;
+      var myhostname = window.location.hostname;
+      var finalurl = myhostname + ":" + myport;
       // console.log(myhostname+':'+myport)
       var token = this.$store.getters.user["access"];
-      window.open(URL +'finalreport/'+ this.order[0].id + "/" + token+'/'+finalurl, "_blank");
+      window.open(
+        URL + "finalreport/" + this.order[0].id + "/" + token + "/" + finalurl,
+        "_blank"
+      );
     },
     updatesum: function () {
       this.sumofsub = [];
@@ -253,6 +266,21 @@ export default {
         this.totalsum = this.totalsum + sum;
         sum = 0;
       }
+    },
+    printorder:function(){
+      localStorage.setItem('order', JSON.stringify(this.order[0]));
+
+      var myport = window.location.port;
+      var myprotocol = window.location.protocol;
+      var myhostname = window.location.hostname;
+            localStorage.setItem('URL', myprotocol+'//'+myhostname + ":" + myport+'/addfeedback/'+this.order[0].id);
+
+      var finalurl = myprotocol+'//'+myhostname + ":" + myport+'/printpage.html';
+      // console.log(finalurl)
+
+        //localStorage.getItem('order')
+        window.open(finalurl, "", "width=200,height=100");
+
     },
     payorder: async function () {
       console.log("pay it");

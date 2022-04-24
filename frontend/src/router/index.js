@@ -20,6 +20,7 @@ const routes = [
     name: 'home',
     component: HomeView
   },
+
   {
     path: '/order/:tableid',
     name: 'order',
