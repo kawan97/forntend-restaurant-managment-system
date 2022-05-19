@@ -83,12 +83,12 @@
                 >
                   <div class="h2">type: {{ foodtype.name }}</div>
                   <div class="row ">
-                    <div class="col-3 my-2"
+                    <div class="col-12 col-lg-4 mx-2 my-2"
                       v-for="itemfood in foodtype.subitem"
                       :key="itemfood.id + 'assafr'"
                     >
                       <!-- cards -->
-                      <div class="card " >
+                      <div class="card " style="min-width: 200px;">
                         <div class="card-body bg-purple">
                           <h5 class="card-text">{{ itemfood.name }}</h5>
                           <h3 class="card-text">{{ itemfood.item_price }}</h3>
@@ -107,6 +107,7 @@
                         </div>
                       </div>
                       <!-- cards -->
+                      
                     </div>
                   </div>
                 </div>
